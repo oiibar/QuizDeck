@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Library } from './library.entity';
+import { Flashcard } from '../../flashcards/entities/flashcard.entity';
 
 @Entity()
 export class User {
@@ -12,6 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany((type) => Library, (library) => library.user)
-  libraries: Library[];
+  @OneToMany(() => Flashcard, (flashcard) => flashcard.user)
+  flashcards: Flashcard[];
 }

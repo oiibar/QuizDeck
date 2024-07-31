@@ -1,25 +1,24 @@
-// app.module.ts
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Folder } from './entities/folder.entity';
-import { Flashcard } from './entities/flashcard.entity';
-import { Library } from './entities/library.entity';
+import { User } from './users/entities/user.entity';
+import { Folder } from './flashcards/entities/folder.entity';
+import { Flashcard } from './flashcards/entities/flashcard.entity';
+import { Library } from './flashcards/entities/library.entity';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'QuizDeck',
-      entities: [User, Library, Folder, Flashcard],
+      port: 5432,
+      username: 'postgres',
+      password: '123',
+      database: 'quizdeck',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
   ],
