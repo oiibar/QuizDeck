@@ -1,44 +1,32 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-} from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
+import { IUser } from 'src/types/types';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
-  async login(username: string, password: string) {
-    const user = await this.usersService.findOne(username);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userService.findOne(username);
+    const passwordVerify = await argon2.verify(user.password, password);
 
-    const payload = { username: user.username };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    if (user && passwordVerify) {
+      return user;
+    }
+    throw new BadRequestException('Username or password is incorrect');
   }
 
-  async signup(createUserDto: CreateUserDto) {
-    const { username, password } = createUserDto;
-    const existingUser = await this.usersService.findOne(username);
-    if (existingUser) {
-      throw new ConflictException('Username already exists');
-    }
-
-    const newUser = await this.usersService.createUser(createUserDto);
-
-    const payload = { username: newUser.username };
+  async login(user: IUser) {
+    const { id, username } = user;
     return {
-      access_token: this.jwtService.sign(payload),
+      id,
+      username,
+      token: this.jwtService.sign({ id: user.id, username: user.username }),
     };
   }
 }
