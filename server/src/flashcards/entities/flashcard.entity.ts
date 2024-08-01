@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
@@ -9,9 +16,15 @@ export class Flashcard {
   @Column()
   name: string;
 
-  @Column('json')
-  flashcards: { question: string; answer: string }[]; // Array of objects with question and answer
+  @Column()
+  flashcards: { question: string; answer: string }[];
 
   @ManyToOne(() => User, (user) => user.flashcards)
   user: User;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
