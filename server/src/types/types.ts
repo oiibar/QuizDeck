@@ -1,4 +1,9 @@
+import { FlashcardGroup } from 'src/flashcards/entities/flashcards.entity';
+
 export interface IUser {
-  id: string;
+  id: number;
   username: string;
+  password: string;
+  createdAt: Date;
+  flashcardGroups: FlashcardGroup[];
 }

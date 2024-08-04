@@ -7,9 +7,13 @@ import {
   Delete,
   Param,
   Get,
+  UseGuards,
+  Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -34,5 +38,23 @@ export class UserController {
     } catch (error) {
       return { message: error.message };
     }
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Req() req) {
+    const username = req.user.username;
+    const user = await this.userService.findOneByUsername(username);
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      createdAt: user.createdAt,
+      flashcardGroups: user.flashcardGroups,
+    };
   }
 }

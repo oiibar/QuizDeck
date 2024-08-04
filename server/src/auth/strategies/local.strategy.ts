@@ -11,7 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findOneByUsername(username);
     if (!user || !(await argon2.verify(user.password, password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
