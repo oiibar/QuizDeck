@@ -1,5 +1,5 @@
 <template>
-  <header class="p-8 bg-yellow-600">
+  <header class="p-8">
     <nav class="flex gap-4 justify-center items-center container">
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/library">Library</NuxtLink>

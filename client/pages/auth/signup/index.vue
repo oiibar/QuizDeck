@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center">
     <div class="flex flex-col items-center justify-center text-center">
       <div
-        class="flex flex-col items-center gap-6 justify-center text-center shadow-[0_4px_12px_0px_rgba(0,0,0,0.1)] p-16 rounded-2xl"
+        class="flex flex-col items-center gap-6 justify-center text-center shadow-[0_4px_12px_0px_rgba(0,0,0,0.1)] p-16 rounded-2xl bg-white text-black"
       >
         <h2 class="text-3xl font-bold">Join to Quiz Deck</h2>
         <p class="text-[#828282] text-xs">

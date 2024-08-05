@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply text-white bg-darkBg;
+  }
+}
+
 @layer components {
   .container {
     @apply max-w-[1000px] mx-auto px-4;

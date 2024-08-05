@@ -10,7 +10,10 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        darkBg: "#0A092D",
+        light: "#423ED8",
+      },
     },
   },
   plugins: [],
