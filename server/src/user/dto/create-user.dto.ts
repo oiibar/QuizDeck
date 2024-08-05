@@ -4,15 +4,18 @@ import {
   MinLength,
   MaxLength,
   Matches,
+  IsEmail,
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3, { message: 'Username should be at least 3 characters long' })
   @MaxLength(20, { message: 'Username should not exceed 20 characters' })
-  @Matches(/^[a-zA-Z0-9]+$/, {
-    message: 'Username should contain only letters and numbers',
-  })
   username: string;
 
   @IsString()

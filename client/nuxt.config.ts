@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     "/api/*": { cache: { maxAge: 60 * 60 } },
   },
   devtools: { enabled: true },
-  css: ["~/main.css"],
+  css: ["@/main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},

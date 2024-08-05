@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <button @click="signout">Logout</button>
+  <div class="flex gap-4 justify-center items-center">
     <div>
       <pre>{{ userStore.user }}</pre>
     </div>
@@ -9,15 +8,13 @@
 
 <script setup lang="ts">
 import { useUserStore } from "~/stores/user";
-
-definePageMeta({
-  middleware: "auth",
-});
+import { useRouter } from "#app";
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const signout = () => {
   userStore.logout();
-  useRouter().go(0);
+  router.push("/auth/login");
 };
 </script>

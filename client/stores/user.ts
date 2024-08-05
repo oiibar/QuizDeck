@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Login, User, UserProfile } from "~/types/user";
+import type { Login, Signup, User, UserProfile } from "~/types/user";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref(0);
@@ -30,13 +30,14 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const signup = async (data: any) => {
+  const signup = async (data: Signup) => {
     try {
-      const res = await $fetch<User>("http://localhost:10000/api/auth/signup", {
+      const res = await $fetch<any>("http://localhost:10000/api/auth/signup", {
         method: "POST",
         body: data,
       });
       setToken(res.token);
+      await profile();
     } catch (error) {
       setToken();
       setUser();

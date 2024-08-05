@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { IUser } from 'src/types/types';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -18,16 +17,16 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
-  @UseGuards(LocalAuthGuard)
-  async login(@Req() req) {
-    return this.authService.login(req.user);
-  }
-
   @Post('signup')
   @UsePipes(new ValidationPipe())
   async signup(@Body() createUserDto: CreateUserDto) {
     return this.authService.signup(createUserDto);
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  async login(@Req() req) {
+    return this.authService.login(req.user);
   }
 
   @Get('profile')
@@ -36,7 +35,7 @@ export class AuthController {
     const user = req.user;
     return {
       id: user.id,
-      username: user.username,
+      email: user.email,
       createdDate: user.createdDate,
       flashcardGroups: user.flashcardGroups,
     };

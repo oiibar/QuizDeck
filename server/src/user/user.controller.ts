@@ -43,8 +43,8 @@ export class UserController {
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   async getProfile(@Req() req) {
-    const username = req.user.username;
-    const user = await this.userService.findOneByUsername(username);
+    const email = req.user.email;
+    const user = await this.userService.findOneByEmail(email);
 
     if (!user) {
       throw new BadRequestException('User not found');
@@ -52,6 +52,7 @@ export class UserController {
 
     return {
       id: user.id,
+      email: user.email,
       username: user.username,
       createdAt: user.createdAt,
       flashcardGroups: user.flashcardGroups,

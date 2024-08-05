@@ -1,7 +1,11 @@
 <template>
-  <div>Library</div>
+  <div class="flex gap-4 justify-center items-center">Library</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"],
+});
+</script>
 
 <style scoped></style>

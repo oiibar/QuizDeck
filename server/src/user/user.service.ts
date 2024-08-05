@@ -14,15 +14,16 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
-      where: { username: createUserDto.username },
+      where: { email: createUserDto.email },
     });
 
     if (existingUser) {
-      throw new BadRequestException('User with this username already exists');
+      throw new BadRequestException('User already exists');
     }
 
     const hashedPassword = await argon2.hash(createUserDto.password);
     const user = this.userRepository.create({
+      email: createUserDto.email,
       username: createUserDto.username,
       password: hashedPassword,
     });
@@ -33,13 +34,13 @@ export class UserService {
   async findOneById(id: number): Promise<User | undefined> {
     return this.userRepository.findOne({
       where: { id },
-      relations: ['flashcardGroups'], // Ensure relations are loaded
+      relations: ['flashcardGroups'],
     });
   }
 
-  async findOneByUsername(username: string): Promise<User | undefined> {
+  async findOneByEmail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({
-      where: { username },
+      where: { email },
       relations: ['flashcardGroups'],
     });
   }

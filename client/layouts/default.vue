@@ -1,13 +1,12 @@
 <template>
-  <header>
-    <nav class="flex gap-4">
-      <NuxtLink to="/">Home</NuxtLink>
-      <NuxtLink to="/library">Library</NuxtLink>
-      <NuxtLink to="/flashcards">Flashcards</NuxtLink>
-      <NuxtLink to="/profile">Profile</NuxtLink>
-    </nav>
-  </header>
-  <div>
+  <Header />
+  <div class="container">
     <slot />
   </div>
 </template>
+
+<script setup lang="ts">
+import Header from "~/components/Header.vue";
+</script>
+
+<style scoped></style>
