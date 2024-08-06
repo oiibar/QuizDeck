@@ -10,10 +10,13 @@ import {
   UseGuards,
   Req,
   BadRequestException,
+  Patch,
+  Put,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -57,5 +60,22 @@ export class UserController {
       createdAt: user.createdAt,
       flashcardGroups: user.flashcardGroups,
     };
+  }
+
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
+  async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    const email = req.user.email;
+    const updatedUser = await this.userService.updateProfile(
+      email,
+      updateUserDto,
+    );
+
+    if (!updatedUser) {
+      throw new BadRequestException('Failed to update profile');
+    }
+
+    return updatedUser;
   }
 }

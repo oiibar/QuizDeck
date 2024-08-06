@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as argon2 from 'argon2';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -55,5 +56,25 @@ export class UserService {
       throw new BadRequestException('User not found or already deleted');
     }
     return 'User successfully deleted';
+  }
+
+  async updateProfile(
+    email: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (updateUserDto.username) {
+      user.username = updateUserDto.username;
+    }
+    if (updateUserDto.password) {
+      user.password = await argon2.hash(updateUserDto.password);
+    }
+
+    return this.userRepository.save(user);
   }
 }

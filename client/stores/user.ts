@@ -64,10 +64,36 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+  const updateProfile = async (data: {
+    username?: string;
+    password?: string;
+  }) => {
+    if (!token.value) {
+      console.error("No token available");
+      return;
+    }
+
+    try {
+      const res = await $fetch("http://localhost:10000/api/user/profile", {
+        method: "PUT",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+          "Content-Type": "application/json", // Ensure correct content type
+        },
+      });
+      setUser(res);
+      await profile();
+    } catch (error) {
+      setUser();
+      console.error("Profile update failed:", error);
+    }
+  };
+
   const logout = async () => {
     setToken();
     setUser();
   };
 
-  return { user, token, login, signup, profile, logout };
+  return { user, token, login, signup, profile, logout, updateProfile };
 });
