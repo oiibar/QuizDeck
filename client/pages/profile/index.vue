@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
-    <div class="w-full max-w-md bg-white shadow-md rounded-lg p-8 text-black">
-      <h2 class="text-2xl font-semibold mb-6 text-center">Profile</h2>
+  <div class="flex items-center justify-center">
+    <div
+      class="space-y-4 text-center w-full max-w-md bg-white shadow-md rounded-lg p-8 text-black"
+    >
+      <h2 class="title">Profile</h2>
       <form @submit.prevent="updateProfile" class="space-y-4">
         <div class="relative w-full">
           <input
@@ -13,7 +15,7 @@
           <div
             class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
           >
-            <img :src="userIcon" alt="" class="w-4" />
+            <img :src="userIcon" alt="Username" class="w-4" />
           </div>
         </div>
 
@@ -29,7 +31,7 @@
           >
             <img
               :src="showPassword ? unlockedIcon : passwordIcon"
-              alt=""
+              alt="Password"
               class="w-4"
             />
           </div>
@@ -39,7 +41,7 @@
           >
             <img
               :src="showPassword ? openIcon : closedIcon"
-              alt=""
+              alt="Password"
               class="w-4"
             />
           </div>
@@ -56,7 +58,7 @@
           >
             <img
               :src="showConfirmPassword ? unlockedIcon : passwordIcon"
-              alt=""
+              alt="Confirm Password"
               class="w-4"
             />
           </div>
@@ -66,26 +68,20 @@
           >
             <img
               :src="showConfirmPassword ? openIcon : closedIcon"
-              alt=""
+              alt="Confirm Password"
               class="w-4"
             />
           </div>
         </div>
-        <p v-if="passwordMismatch" class="text-red-500 text-xs mt-2">
+        <p v-if="passwordMismatch" class="text-red-500">
           Passwords do not match
         </p>
         <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          class="w-full bg-blueAc text-white py-2 px-4 rounded-md"
         >
           Update Profile
-        </button>
-        <button
-          @click="signout"
-          class="mt-6 w-full bg-red-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-        >
-          Logout
         </button>
       </form>
     </div>
@@ -105,7 +101,6 @@ import { useRouter } from "#app";
 
 const userStore = useUserStore();
 const router = useRouter();
-
 const username = ref(userStore.user?.username || "");
 const password = ref("");
 const confirmPassword = ref("");
@@ -115,15 +110,12 @@ const showConfirmPassword = ref(false);
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
 };
-
 const toggleConfirmPasswordVisibility = () => {
   showConfirmPassword.value = !showConfirmPassword.value;
 };
-
 const passwordMismatch = computed(
   () => password.value !== confirmPassword.value
 );
-
 const isFormValid = computed(() => {
   return username.value.trim() !== "" || password.value.trim() !== "";
 });

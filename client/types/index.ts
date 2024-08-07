@@ -21,14 +21,19 @@ export interface UserProfile {
   email: string;
   username: string;
   createdAt: Date;
-  flashcardGroups: FlashcardGroup[];
+  flashcardGroups: Flashcard[];
 }
 
-export interface FlashcardGroup {
+export interface Flashcard {
+  question: string;
+  answer: string;
+}
+
+export interface flashcardGroups {
   id: number;
   title: string;
   createdAt: Date;
   updatedAt: Date;
   user: User;
-  flashcards: Array<{ question: string; answer: string }>;
+  flashcards: Array<Flashcard>;
 }

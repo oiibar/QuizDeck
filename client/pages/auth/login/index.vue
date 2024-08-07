@@ -53,40 +53,7 @@
               />
             </div>
           </div>
-          <div class="relative w-full">
-            <input
-              :type="showConfirmPassword ? 'text' : 'password'"
-              placeholder="Confirm password"
-              class="border border-[#BDBDBD] pl-10 pr-10 py-2 rounded-md w-full"
-              v-model="confirmPassword"
-            />
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
-              <img
-                :src="showConfirmPassword ? unlockedIcon : passwordIcon"
-                alt=""
-                class="w-4"
-              />
-            </div>
-            <div
-              class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-              @click="toggleConfirmPasswordVisibility"
-            >
-              <img
-                :src="showConfirmPassword ? openIcon : closedIcon"
-                alt=""
-                class="w-4"
-              />
-            </div>
-          </div>
-          <p v-if="passwordMismatch" class="text-red-500 text-xs">
-            Passwords do not match
-          </p>
-          <button
-            :disabled="passwordMismatch"
-            class="bg-[#2F80ED] rounded-xl px-4 py-2 text-white w-full"
-          >
+          <button class="bg-[#2F80ED] rounded-xl px-4 py-2 text-white w-full">
             Start Your Learning
           </button>
         </form>
@@ -134,30 +101,14 @@ const userStore = useUserStore();
 const router = useRouter();
 
 const showPassword = ref(false);
-const showConfirmPassword = ref(false);
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
+const email = ref("oiibar@gmail.com");
+const password = ref("Beaver@4556");
 
-// Toggle password visibility
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
 };
 
-const toggleConfirmPasswordVisibility = () => {
-  showConfirmPassword.value = !showConfirmPassword.value;
-};
-
-// Computed property to check if passwords match
-const passwordMismatch = computed(() => {
-  return password.value !== confirmPassword.value;
-});
-
 const login = async () => {
-  if (passwordMismatch.value) {
-    return; // Prevent login if passwords do not match
-  }
-
   try {
     await userStore.login({
       email: email.value,
@@ -165,7 +116,7 @@ const login = async () => {
     });
 
     if (userStore.user) {
-      await router.push("/profile");
+      await router.replace("/library");
     }
   } catch (error) {
     console.error("Login failed:", error);

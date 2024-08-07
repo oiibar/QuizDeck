@@ -6,12 +6,12 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private usersService: UserService) {
+  constructor(private userService: UserService) {
     super({ usernameField: 'email' });
   }
 
   async validate(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findOneByEmail(email);
+    const user = await this.userService.findOneByEmail(email);
     if (!user || !(await argon2.verify(user.password, password))) {
       throw new UnauthorizedException('Invalid credentials');
     }

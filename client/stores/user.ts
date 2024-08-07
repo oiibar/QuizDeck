@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Login, Signup, User, UserProfile } from "~/types/user";
+import type { Login, Signup, User, UserProfile } from "~/types";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref(0);
