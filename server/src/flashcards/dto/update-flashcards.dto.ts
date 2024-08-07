@@ -22,6 +22,10 @@ export class UpdateFlashcardGroupDto {
   @IsString()
   title?: string;
 
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FlashcardDto)
@@ -35,6 +39,10 @@ export class FlashcardGroupDto {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
 
   createdAt: Date;
 

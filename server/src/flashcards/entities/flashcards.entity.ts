@@ -19,6 +19,11 @@ export class FlashcardGroup {
   @IsString()
   title: string;
 
+  @Column()
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
   @ManyToOne(() => User, (user) => user.flashcardGroups, { eager: true })
   user: User;
 

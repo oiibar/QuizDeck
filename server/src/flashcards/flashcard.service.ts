@@ -16,11 +16,11 @@ export class FlashcardService {
     private readonly flashcardRepository: Repository<FlashcardGroup>,
   ) {}
 
-  async create(createFlashcardDto: CreateFlashcardGroupDto, userId: number) {
+  async create(createFlashcardDto: CreateFlashcardGroupDto, id: number) {
     const existingFlashcardGroup = await this.flashcardRepository.findOne({
       where: {
         title: createFlashcardDto.title,
-        user: { id: userId },
+        user: { id },
       },
     });
 
@@ -32,8 +32,9 @@ export class FlashcardService {
 
     const newFlashcardGroup = this.flashcardRepository.create({
       title: createFlashcardDto.title,
+      description: createFlashcardDto.description,
       flashcards: createFlashcardDto.flashcards,
-      user: { id: userId },
+      user: { id },
     });
 
     return await this.flashcardRepository.save(newFlashcardGroup);

@@ -5,7 +5,7 @@
     <div class="flex flex-col gap-10" title="Home">
       <NuxtLink to="/" class="text-4xl">Q</NuxtLink>
 
-      <nav class="flex flex-col gap-2">
+      <nav class="flex flex-col">
         <NuxtLink to="/" class="hover:bg-grayBg rounded-lg p-2 tooltip">
           <span class="tooltiptext">Home</span>
           <img src="~/assets/home.svg" alt="Home" class="w-6" />
@@ -27,7 +27,7 @@
     >
       <button @click="signout" class="hover:bg-grayBg rounded-lg p-1 tooltip">
         <span class="tooltiptext">Log out</span>
-        <img src="~/assets/logout.svg" class="w-10" alt="Logout" />
+        <img src="~/assets/logout.svg" class="w-8" alt="Logout" />
       </button>
 
       <button
@@ -35,7 +35,7 @@
         class="hover:bg-grayBg rounded-lg p-1 tooltip"
       >
         <span class="tooltiptext">Create</span>
-        <img src="~/assets/create.svg" class="w-8" alt="Create" />
+        <img src="~/assets/create.svg" class="w-7" alt="Create" />
       </button>
       <div
         class="w-10 h-10 flex items-center justify-center rounded-full bg-purpleAc cursor-pointer"

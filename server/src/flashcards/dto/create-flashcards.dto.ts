@@ -1,5 +1,12 @@
-import { IsNotEmpty, IsString, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  ValidateNested,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { User } from 'src/user/entities/user.entity';
 
 class FlashcardDto {
   @IsNotEmpty()
@@ -17,7 +24,8 @@ export class CreateFlashcardGroupDto {
   title: string;
 
   @IsNotEmpty()
-  userId: number;
+  @IsString()
+  description: string;
 
   @IsArray()
   @ValidateNested({ each: true })

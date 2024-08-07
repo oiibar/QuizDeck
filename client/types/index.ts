@@ -32,8 +32,6 @@ export interface Flashcard {
 export interface flashcardGroups {
   id: number;
   title: string;
-  createdAt: Date;
-  updatedAt: Date;
-  user: User;
+  description: string;
   flashcards: Array<Flashcard>;
 }

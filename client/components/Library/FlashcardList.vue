@@ -1,8 +1,6 @@
 <template>
   <div class="">
-    <div v-if="loading" class="flex justify-center items-center">
-      Loading...
-    </div>
+    <div v-if="loading" class="flex justify-center items-center"></div>
 
     <div v-else class="flex flex-wrap gap-4 justify-center">
       <Queries @search="handleSearch" @sort="handleSort" />
