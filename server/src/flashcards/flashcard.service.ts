@@ -34,6 +34,7 @@ export class FlashcardService {
       title: createFlashcardDto.title,
       description: createFlashcardDto.description,
       flashcards: createFlashcardDto.flashcards,
+      pinned: createFlashcardDto.pinned,
       user: { id },
     });
 

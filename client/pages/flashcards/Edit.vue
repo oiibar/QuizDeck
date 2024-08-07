@@ -94,6 +94,7 @@ const handleCreate = async () => {
 
     const response = await flashcardStore.createFlashcard({
       title: title.value,
+      pinned: false,
       description: description.value,
       flashcards: flashcards.value,
     });

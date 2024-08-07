@@ -56,10 +56,30 @@ export const useFlashcardStore = defineStore("flashcards", () => {
     }
   };
 
+  const updateFlashcards = async (id: number, data: flashcardGroups) => {
+    try {
+      const res = await $fetch<Flashcard[]>(
+        `http://localhost:10000/api/flashcards${id}`,
+        {
+          method: "PATCH",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${userStore.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      flashcards.value = res;
+    } catch (error) {
+      console.error("Failed to update flashcards:", error);
+    }
+  };
+
   return {
     flashcards,
     fetchFlashcards,
     getFlashcard,
     createFlashcard,
+    updateFlashcards,
   };
 });

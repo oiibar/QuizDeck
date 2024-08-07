@@ -40,6 +40,7 @@ import { defineProps, ref } from "vue";
 import type { Flashcard } from "~/types";
 import pin from "~/assets/pin.svg";
 import unpin from "~/assets/unpin.svg";
+import { useUserStore } from "~/stores/user";
 
 const userStore = useUserStore();
 const props = defineProps({
@@ -49,13 +50,42 @@ const props = defineProps({
   },
 });
 
-const isPinned = ref(false);
+const isPinned = ref(props.flashcard.pinned);
 
-const handlePinClick = (event: MouseEvent) => {
+const handlePinClick = async (event: MouseEvent) => {
   event.stopPropagation();
 
   isPinned.value = !isPinned.value;
-  console.log(isPinned.value ? "Flashcard pinned" : "Flashcard unpinned");
+
+  const updatedData = {
+    ...props.flashcard,
+    pinned: isPinned.value,
+  };
+
+  try {
+    await updateFlashcards(props.flashcard.id, updatedData);
+  } catch (error) {
+    console.error("Failed to update flashcard:", error);
+    isPinned.value = !isPinned.value;
+  }
+};
+
+const updateFlashcards = async (id: number, data: Flashcard) => {
+  try {
+    const res = await $fetch<Flashcard[]>(
+      `http://localhost:10000/api/flashcards/${id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(data),
+        headers: {
+          Authorization: `Bearer ${userStore.token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Failed to update flashcard:", error);
+  }
 };
 </script>
 

@@ -4,6 +4,7 @@ import {
   IsArray,
   ValidateNested,
   IsNumber,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
@@ -22,6 +23,10 @@ export class CreateFlashcardGroupDto {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  pinned: boolean;
 
   @IsNotEmpty()
   @IsString()

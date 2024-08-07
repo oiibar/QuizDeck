@@ -32,6 +32,7 @@ export interface Flashcard {
 export interface flashcardGroups {
   id: number;
   title: string;
+  pinned: boolean;
   description: string;
   flashcards: Array<Flashcard>;
 }

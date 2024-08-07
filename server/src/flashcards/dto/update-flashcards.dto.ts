@@ -4,6 +4,7 @@ import {
   IsArray,
   ValidateNested,
   IsNotEmpty,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -39,6 +40,10 @@ export class FlashcardGroupDto {
   @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  pinned: boolean;
 
   @IsNotEmpty()
   @IsString()

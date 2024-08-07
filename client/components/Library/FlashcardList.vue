@@ -41,38 +41,42 @@ const selectedSort = ref("relevance");
 const router = useRouter();
 
 const filteredFlashcards = computed(() => {
-  let searchFiltered = flashcards.value.filter((flashcard) =>
+  const searchFiltered = flashcards.value.filter((flashcard) =>
     flashcard.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
-  switch (selectedSort.value) {
-    case "date-desc":
-      searchFiltered = searchFiltered.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      break;
-    case "date-asc":
-      searchFiltered = searchFiltered.sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-      break;
-    case "title-asc":
-      searchFiltered = searchFiltered.sort((a, b) =>
-        a.title.localeCompare(b.title)
-      );
-      break;
-    case "title-desc":
-      searchFiltered = searchFiltered.sort((a, b) =>
-        b.title.localeCompare(a.title)
-      );
-      break;
-    default:
-      break;
-  }
+  const pinnedFlashcards = searchFiltered.filter(
+    (flashcard) => flashcard.pinned
+  );
+  const nonPinnedFlashcards = searchFiltered.filter(
+    (flashcard) => !flashcard.pinned
+  );
 
-  return searchFiltered;
+  const sortFlashcards = (flashcardsToSort: Flashcard[]) => {
+    return flashcardsToSort.sort((a, b) => {
+      switch (selectedSort.value) {
+        case "date-desc":
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        case "date-asc":
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        case "title-asc":
+          return a.title.localeCompare(b.title);
+        case "title-desc":
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
+      }
+    });
+  };
+
+  const sortedPinnedFlashcards = sortFlashcards(pinnedFlashcards);
+  const sortedNonPinnedFlashcards = sortFlashcards(nonPinnedFlashcards);
+
+  return [...sortedPinnedFlashcards, ...sortedNonPinnedFlashcards];
 });
 
 const navigateToFlashcard = (id: string) => {

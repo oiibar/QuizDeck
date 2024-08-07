@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="min-h-screen flex flex-col justify-between items-center text-center font-bold px-2 py-4"
+    class="min-h-screen flex flex-col justify-between items-center text-center font-bold px-2 py-4 shadow-lg"
   >
     <div class="flex flex-col gap-10" title="Home">
       <NuxtLink to="/" class="text-4xl">Q</NuxtLink>

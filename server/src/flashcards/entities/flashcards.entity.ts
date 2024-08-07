@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity()
@@ -23,6 +23,11 @@ export class FlashcardGroup {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @Column({ default: false })
+  @IsBoolean()
+  @IsNotEmpty()
+  pinned: boolean;
 
   @ManyToOne(() => User, (user) => user.flashcardGroups, { eager: true })
   user: User;
