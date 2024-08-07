@@ -1,7 +1,9 @@
 <template>
-  <Header />
-  <div class="container">
-    <slot />
+  <div class="flex">
+    <Header />
+    <div class="container">
+      <slot />
+    </div>
   </div>
 </template>
 

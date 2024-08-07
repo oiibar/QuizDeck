@@ -79,7 +79,7 @@ export const useUserStore = defineStore("user", () => {
         body: data,
         headers: {
           Authorization: `Bearer ${token.value}`,
-          "Content-Type": "application/json", // Ensure correct content type
+          "Content-Type": "application/json",
         },
       });
       setUser(res);

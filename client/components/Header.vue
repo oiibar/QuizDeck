@@ -1,53 +1,61 @@
 <template>
-  <header
-    class="flex justify-between items-center font-bold p-4 bg-slate-800 shadow-md"
+  <aside
+    class="min-h-screen flex flex-col justify-between items-center text-center font-bold px-2 py-4"
   >
-    <NuxtLink to="/" class="text-2xl">QuizDeck</NuxtLink>
+    <div class="flex flex-col gap-10" title="Home">
+      <NuxtLink to="/" class="text-4xl">Q</NuxtLink>
 
-    <nav class="flex gap-10">
-      <NuxtLink
-        to="/"
-        class="hover:border-b-2 hover:border-purpleAc py-1 transition-all duration-100"
-        exact-active-class="border-b-2 border-purpleAc"
+      <nav class="flex flex-col gap-2">
+        <NuxtLink to="/" class="hover:bg-grayBg rounded-lg p-2 tooltip">
+          <span class="tooltiptext">Home</span>
+          <img src="~/assets/home.svg" alt="Home" class="w-6" />
+        </NuxtLink>
+
+        <NuxtLink
+          title="Library"
+          to="/library"
+          class="hover:bg-grayBg rounded-lg p-2 tooltip"
+          ><span class="tooltiptext">Library</span>
+          <img src="~/assets/library.svg" alt="Library" class="w-6" />
+        </NuxtLink>
+      </nav>
+    </div>
+
+    <div
+      v-if="userStore.user"
+      class="flex flex-col justify-center items-center gap-1"
+    >
+      <button @click="signout" class="hover:bg-grayBg rounded-lg p-1 tooltip">
+        <span class="tooltiptext">Log out</span>
+        <img src="~/assets/logout.svg" class="w-10" alt="Logout" />
+      </button>
+
+      <button
+        @click="navigateToCreate"
+        class="hover:bg-grayBg rounded-lg p-1 tooltip"
       >
-        Home
-      </NuxtLink>
-
-      <NuxtLink
-        to="/library"
-        class="hover:border-b-2 hover:border-purpleAc py-1 transition-all duration-100"
-        exact-active-class="border-b-2 border-purpleAc"
-      >
-        Library
-      </NuxtLink>
-    </nav>
-
-    <div v-if="userStore.user" class="flex gap-4">
+        <span class="tooltiptext">Create</span>
+        <img src="~/assets/create.svg" class="w-8" alt="Create" />
+      </button>
       <div
         class="w-10 h-10 flex items-center justify-center rounded-full bg-purpleAc cursor-pointer"
         @click="navigateToProfile"
+        title="Profile"
       >
         {{ userStore.user.username.charAt(0).toUpperCase() }}
       </div>
-
-      <button
-        @click="signout"
-        class="bg-red-500 py-1 px-3 rounded-md hover:bg-red-600 transition-colors duration-300"
-      >
-        Logout
-      </button>
     </div>
 
-    <div v-else class="flex gap-4">
-      <NuxtLink to="/auth/signup" class="bg-blueAc py-2 px-3 rounded-md"
+    <div v-else class="flex flex-col gap-4">
+      <NuxtLink to="/auth/signup" class="bg-blueAc p-2 rounded-md"
         >Sign Up</NuxtLink
       >
 
-      <NuxtLink to="/auth/login" class="bg-blueAc py-2 px-3 rounded-md"
+      <NuxtLink to="/auth/login" class="bg-blueAc p-2 rounded-md"
         >Login</NuxtLink
       >
     </div>
-  </header>
+  </aside>
 </template>
 
 <script setup lang="ts">
@@ -65,6 +73,35 @@ const signout = () => {
 const navigateToProfile = () => {
   router.push("/profile");
 };
+
+const navigateToCreate = () => {
+  router.push("/flashcards/edit");
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  padding: 5px 15px;
+  background-color: #2e3856;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  transform: translateY(-20%);
+  left: 105%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>

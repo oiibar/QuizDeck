@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 items-center container">
+  <div class="flex flex-col gap-8 container h-screen pt-16">
     <h1 class="title">Your library</h1>
     <FlashcardList :flashcards="flashcardStore.flashcards" />
   </div>

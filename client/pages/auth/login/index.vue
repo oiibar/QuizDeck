@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center">
+  <div class="flex justify-center items-center h-screen">
     <div class="flex flex-col items-center justify-center text-center">
       <div
         class="flex flex-col items-center gap-6 justify-center text-center shadow-[0_4px_12px_0px_rgba(0,0,0,0.1)] p-16 rounded-2xl bg-white text-black"
@@ -116,10 +116,25 @@ const login = async () => {
     });
 
     if (userStore.user) {
+      console.log("User logged in:", userStore.user);
       await router.replace("/library");
     }
   } catch (error) {
+    // Log the error to the console for debugging
     console.error("Login failed:", error);
+
+    // Additional handling based on the type of error
+    if (error.response && error.response.data) {
+      // Check the error response from the server
+      const errorData = error.response.data;
+
+      if (errorData.message) {
+        console.error("Error message:", errorData.message);
+      }
+    } else {
+      // Handle generic errors or network issues
+      console.error("An unexpected error occurred:", error.message || error);
+    }
   }
 };
 </script>
