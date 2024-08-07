@@ -5,8 +5,7 @@
       class="border-2 border-grayBg rounded-lg py-2 px-4 bg-transparent hover:bg-grayBg hover:bg-opacity-40"
       @change="emitSorting"
     >
-      <option value="relevance" selected class="bg-darkBg">Relevance</option>
-      <option value="date-desc" class="bg-darkBg">Most Recent</option>
+      <option selected value="date-desc" class="bg-darkBg">Most Recent</option>
       <option value="date-asc" class="bg-darkBg">Oldest First</option>
       <option value="title-asc" class="bg-darkBg">Title (A-Z)</option>
       <option value="title-desc" class="bg-darkBg">Title (Z-A)</option>
@@ -38,7 +37,7 @@ const emit = defineEmits<{
 }>();
 
 const searchQuery = ref("");
-const selectedSort = ref("recent");
+const selectedSort = ref("date-asc");
 
 const emitSearch = () => {
   emit("search", searchQuery.value);
@@ -48,7 +47,3 @@ const emitSorting = () => {
   emit("sort", selectedSort.value);
 };
 </script>
-
-<style scoped>
-/* Add styles for the Queries component here if needed */
-</style>

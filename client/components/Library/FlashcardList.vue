@@ -37,23 +37,42 @@ const props = defineProps({
 const loading = ref(true);
 const flashcards = ref(props.flashcards);
 const searchQuery = ref("");
-const selectedSort = ref("recent");
+const selectedSort = ref("relevance");
 const router = useRouter();
 
 const filteredFlashcards = computed(() => {
-  const searchFiltered = flashcards.value.filter((flashcard) =>
+  let searchFiltered = flashcards.value.filter((flashcard) =>
     flashcard.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
-  return searchFiltered.sort((a, b) => {
-    switch (selectedSort.value) {
-      case "recent":
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+  switch (selectedSort.value) {
+    case "date-desc":
+      searchFiltered = searchFiltered.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      break;
+    case "date-asc":
+      searchFiltered = searchFiltered.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      break;
+    case "title-asc":
+      searchFiltered = searchFiltered.sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+      break;
+    case "title-desc":
+      searchFiltered = searchFiltered.sort((a, b) =>
+        b.title.localeCompare(a.title)
+      );
+      break;
+    default:
+      break;
+  }
 
-      default:
-        return 0;
-    }
-  });
+  return searchFiltered;
 });
 
 const navigateToFlashcard = (id: string) => {
@@ -74,5 +93,3 @@ onMounted(async () => {
   loading.value = false;
 });
 </script>
-
-<style scoped></style>
