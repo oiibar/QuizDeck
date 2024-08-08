@@ -1,45 +1,41 @@
 <template>
   <aside
-    class="min-h-screen flex flex-col justify-between items-center text-center font-bold px-2 py-4 shadow-lg"
+    class="sticky top-0 h-screen w-16 flex flex-col justify-between items-center text-center font-bold px-2 py-4 shadow-lg"
   >
-    <div class="flex flex-col gap-10" title="Home">
+    <div class="flex flex-col gap-10">
       <NuxtLink to="/" class="text-4xl">Q</NuxtLink>
 
-      <nav class="flex flex-col">
-        <NuxtLink to="/" class="hover:bg-grayBg rounded-lg p-2 tooltip">
+      <nav class="flex flex-col gap-2">
+        <NuxtLink to="/" class="hover:bg-grayBg rounded-lg p-1 tooltip">
           <span class="tooltiptext">Home</span>
           <img src="~/assets/home.svg" alt="Home" class="w-6" />
         </NuxtLink>
 
-        <NuxtLink
-          title="Library"
-          to="/library"
-          class="hover:bg-grayBg rounded-lg p-2 tooltip"
+        <NuxtLink to="/library" class="hover:bg-grayBg rounded-lg p-1 tooltip"
           ><span class="tooltiptext">Library</span>
           <img src="~/assets/library.svg" alt="Library" class="w-6" />
+        </NuxtLink>
+
+        <NuxtLink
+          to="/flashcards/edit"
+          class="hover:bg-grayBg rounded-lg p-1 tooltip"
+          ><span class="tooltiptext">Create</span>
+          <img src="~/assets/create.svg" alt="Library" class="w-6" />
         </NuxtLink>
       </nav>
     </div>
 
     <div
       v-if="userStore.user"
-      class="flex flex-col justify-center items-center gap-1"
+      class="flex flex-col justify-center items-center gap-2"
     >
-      <button @click="signout" class="hover:bg-grayBg rounded-lg p-1 tooltip">
-        <span class="tooltiptext">Log out</span>
+      <button @click="signout" class="hover:bg-grayBg rounded-lg tooltip">
+        <span class="tooltiptext">Logout</span>
         <img src="~/assets/logout.svg" class="w-8" alt="Logout" />
-      </button>
-
-      <button
-        @click="navigateToCreate"
-        class="hover:bg-grayBg rounded-lg p-1 tooltip"
-      >
-        <span class="tooltiptext">Create</span>
-        <img src="~/assets/create.svg" class="w-7" alt="Create" />
       </button>
       <div
         class="w-10 h-10 flex items-center justify-center rounded-full bg-purpleAc cursor-pointer"
-        @click="navigateToProfile"
+        @click="() => router.push('/profile')"
         title="Profile"
       >
         {{ userStore.user.username.charAt(0).toUpperCase() }}
@@ -62,20 +58,12 @@
 import { useUserStore } from "~/stores/user";
 import { useRouter } from "#app";
 
-const userStore = useUserStore();
 const router = useRouter();
+const userStore = useUserStore();
 
 const signout = () => {
   userStore.logout();
   router.push("/auth/login");
-};
-
-const navigateToProfile = () => {
-  router.push("/profile");
-};
-
-const navigateToCreate = () => {
-  router.push("/flashcards/edit");
 };
 </script>
 
@@ -94,7 +82,7 @@ const navigateToCreate = () => {
   border-radius: 6px;
   position: absolute;
   z-index: 1;
-  transform: translateY(-20%);
+  transform: translateY(-12%);
   left: 105%;
   opacity: 0;
   transition: opacity 0.3s;

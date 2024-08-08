@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 container h-screen py-16">
+  <div class="container">
     <div class="flex justify-between">
       <div>
         <h1 class="font-bold text-2xl">Create flashcards</h1>
@@ -13,16 +13,13 @@
         >
           Create
         </button>
-        <button class="bg-blueAc text-white py-2 px-4 rounded-md">
-          Create and practice
-        </button>
       </div>
     </div>
 
     <div class="flex flex-col gap-4 text-xl">
       <div class="flex flex-col gap-2">
         <input
-          class="border-b-2 border-b-white focus:border-[#FFCD1F] py-2 bg-transparent focus:outline-none"
+          class="input"
           type="text"
           v-model="title"
           id="title"
@@ -33,7 +30,7 @@
       <div class="flex flex-col gap-2">
         <input
           type="text"
-          class="border-b-2 border-b-white focus:border-[#FFCD1F] py-2 bg-transparent focus:outline-none"
+          class="input"
           v-model="description"
           id="description"
           placeholder="Add a description..."
@@ -44,7 +41,7 @@
         <div
           v-for="(flashcard, index) in flashcards"
           :key="index"
-          class="bg-grayBg rounded-lg w-full p-6 flex flex-col gap-6"
+          class="bg-grayBg rounded-lg w-full p-3 flex flex-col gap-6"
         >
           <FlashcardItem
             :flashcard="flashcard"

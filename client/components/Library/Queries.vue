@@ -1,8 +1,10 @@
 <template>
-  <form class="flex items-center justify-between w-full">
+  <form
+    class="flex flex-col md:flex-row items-center justify-between w-full gap-4"
+  >
     <select
       v-model="selectedSort"
-      class="border-2 border-grayBg rounded-lg py-2 px-4 bg-transparent hover:bg-grayBg hover:bg-opacity-40"
+      class="border-2 border-grayBg rounded-lg p-2 bg-transparent hover:bg-grayBg hover:bg-opacity-40"
       @change="emitSorting"
     >
       <option selected value="date-desc" class="bg-darkBg">Most Recent</option>
@@ -11,12 +13,12 @@
       <option value="title-desc" class="bg-darkBg">Title (Z-A)</option>
     </select>
 
-    <div class="relative">
+    <div class="relative w-full md:w-1/3">
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Search flashcards"
-        class="rounded-lg py-2 px-4 pr-12 bg-grayBg focus:outline-none"
+        class="rounded-lg py-2 px-4 pr-12 bg-grayBg focus:outline-none w-full"
         @input="emitSearch"
       />
       <img
@@ -37,7 +39,7 @@ const emit = defineEmits<{
 }>();
 
 const searchQuery = ref("");
-const selectedSort = ref("date-asc");
+const selectedSort = ref("date-desc");
 
 const emitSearch = () => {
   emit("search", searchQuery.value);

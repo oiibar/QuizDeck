@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-grayBg rounded-lg w-full p-2 flex flex-col gap-6">
+  <div class="flex flex-col gap-6 bg-grayBg rounded-lg w-full">
     <div class="flex justify-between cursor-move">
       <p class="text-lg font-bold">{{ index + 1 }}</p>
       <div class="flex gap-4 items-center justify-center">
@@ -16,20 +16,22 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-between gap-10 text-lg w-full">
-      <div class="flex flex-col gap-1 w-1/2">
+    <div
+      class="flex flex-wrap justify-between gap-10 text-lg w-full md:flex-nowrap"
+    >
+      <div class="flex flex-col gap-1 md:w-1/2 w-full">
         <input
-          class="border-b-2 border-b-white focus:border-b-4 focus:border-[#FFCD1F] py-1 bg-transparent focus:outline-none"
+          class="input"
           type="text"
           v-model="flashcard.question"
           placeholder="Enter term..."
         />
         <label class="text-sm">Term</label>
       </div>
-      <div class="flex flex-col gap-1 w-1/2">
+      <div class="flex flex-col gap-1 md:w-1/2 w-full">
         <input
           type="text"
-          class="border-b-2 border-b-white focus:border-b-4 focus:border-[#FFCD1F] py-1 bg-transparent focus:outline-none"
+          class="input"
           v-model="flashcard.answer"
           placeholder="Enter definition..."
         />

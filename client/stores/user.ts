@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
-import type { Login, Signup, User, UserProfile } from "~/types";
+import type { Login, Signup, User, UserProfile } from "~/types/types";
+
+const BASE_URL = "http://localhost:10000/api";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref(0);
@@ -16,7 +18,7 @@ export const useUserStore = defineStore("user", () => {
 
   const login = async (data: Login) => {
     try {
-      const res = await $fetch<User>("http://localhost:10000/api/auth/login", {
+      const res = await $fetch<User>(`${BASE_URL}/auth/login`, {
         method: "POST",
         body: data,
       });
@@ -32,7 +34,7 @@ export const useUserStore = defineStore("user", () => {
 
   const signup = async (data: Signup) => {
     try {
-      const res = await $fetch<any>("http://localhost:10000/api/auth/signup", {
+      const res = await $fetch<any>(`${BASE_URL}/auth/signup`, {
         method: "POST",
         body: data,
       });
@@ -48,14 +50,11 @@ export const useUserStore = defineStore("user", () => {
   const profile = async () => {
     if (token.value) {
       try {
-        const res = await $fetch<UserProfile>(
-          "http://localhost:10000/api/user/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token.value}`,
-            },
-          }
-        );
+        const res = await $fetch<UserProfile>(`${BASE_URL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+          },
+        });
         setUser(res);
       } catch (error) {
         setUser();
@@ -74,7 +73,7 @@ export const useUserStore = defineStore("user", () => {
     }
 
     try {
-      const res = await $fetch("http://localhost:10000/api/user/profile", {
+      const res = await $fetch(`${BASE_URL}/user/profile`, {
         method: "PUT",
         body: data,
         headers: {
