@@ -6,19 +6,40 @@
       <NuxtLink to="/" class="text-4xl">Q</NuxtLink>
 
       <nav class="flex flex-col gap-2">
-        <NuxtLink to="/" class="hover:bg-grayBg rounded-lg p-1 tooltip">
+        <NuxtLink
+          to="/"
+          :class="{
+            'bg-grayBg': isActive('/'),
+            'hover:bg-grayBg': !isActive('/'),
+          }"
+          class="rounded-lg p-1 tooltip"
+        >
           <span class="tooltiptext">Home</span>
           <img src="~/assets/home.svg" alt="Home" class="w-6" />
         </NuxtLink>
 
-        <NuxtLink to="/library" class="hover:bg-grayBg rounded-lg p-1 tooltip"
-          ><span class="tooltiptext">Library</span>
+        <NuxtLink
+          to="/library"
+          :class="{
+            'bg-grayBg': isActive('/library'),
+            'hover:bg-grayBg': !isActive('/library'),
+          }"
+          class="rounded-lg p-1 tooltip"
+        >
+          <span class="tooltiptext">Library</span>
           <img src="~/assets/library.svg" alt="Library" class="w-6" />
         </NuxtLink>
 
-        <NuxtLink to="/edit" class="hover:bg-grayBg rounded-lg p-1 tooltip"
-          ><span class="tooltiptext">Create</span>
-          <img src="~/assets/create.svg" alt="Library" class="w-6" />
+        <NuxtLink
+          to="/edit"
+          :class="{
+            'bg-grayBg': isActive('/edit'),
+            'hover:bg-grayBg': !isActive('/edit'),
+          }"
+          class="rounded-lg p-1 tooltip"
+        >
+          <span class="tooltiptext">Create</span>
+          <img src="~/assets/create.svg" alt="Create" class="w-6" />
         </NuxtLink>
       </nav>
     </div>
@@ -44,7 +65,6 @@
       <NuxtLink to="/auth/signup" class="bg-blueAc p-1 rounded-md"
         >Join</NuxtLink
       >
-
       <NuxtLink to="/auth/login" class="bg-blueAc p-1 rounded-md"
         >Login</NuxtLink
       >
@@ -53,11 +73,17 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { useUserStore } from "~/stores/user";
 import { useRouter } from "#app";
 
 const router = useRouter();
 const userStore = useUserStore();
+const route = useRoute();
+
+const isActive = (path: string) => {
+  return route.path === path;
+};
 
 const signout = () => {
   userStore.logout();

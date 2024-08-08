@@ -10,7 +10,7 @@
         class="bg-blueAc py-2 px-4 rounded-md flex gap-2 items-center"
       >
         <img src="~/assets/create.svg" class="w-6" alt="Create" />
-        <p>Generate</p>
+        <p>Create</p>
       </button>
       <button
         @click="handleLibrary"

@@ -3,7 +3,6 @@
     <div class="flex justify-between">
       <div>
         <h1 class="font-bold text-2xl">Create flashcards</h1>
-        <p class="text-sm text-gray-400">Saved 58 mins ago</p>
       </div>
 
       <div class="flex gap-2 items-center">
@@ -37,11 +36,15 @@
         />
         <label class="text-sm" for="description">Description</label>
       </div>
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6" @dragover="handleDragOver">
         <div
           v-for="(flashcard, index) in flashcards"
           :key="index"
           class="bg-grayBg rounded-lg w-full p-3 flex flex-col gap-6"
+          draggable="true"
+          @dragstart="handleDragStart($event, index)"
+          @drop="handleDrop($event, index)"
+          @dragend="handleDragEnd"
         >
           <FlashcardItem
             :flashcard="flashcard"
@@ -68,12 +71,14 @@ import { ref } from "vue";
 import FlashcardItem from "~/components/Create/FlashcardItem.vue";
 import { useFlashcardStore } from "~/stores/flashcards";
 import { useRouter } from "vue-router";
-const flashcardStore = useFlashcardStore();
 
+const flashcardStore = useFlashcardStore();
 const title = ref("");
 const description = ref("");
 const router = useRouter();
 const flashcards = ref<Array<{ question: string; answer: string }>>([]);
+
+let draggedIndex = -1;
 
 const addFlashcard = () => {
   flashcards.value.push({ question: "", answer: "" });
@@ -99,5 +104,32 @@ const handleCreate = async () => {
   } catch (error) {
     console.error("Failed to create flashcard:", error.message);
   }
+};
+
+// Drag-and-drop handlers
+const handleDragStart = (event: DragEvent, index: number) => {
+  draggedIndex = index;
+  event.dataTransfer!.setData("text/plain", `${index}`);
+  event.dataTransfer!.effectAllowed = "move";
+};
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault();
+};
+
+const handleDrop = (event: DragEvent, index: number) => {
+  event.preventDefault();
+  const draggedIndexStr = event.dataTransfer!.getData("text/plain");
+  const draggedIndex = parseInt(draggedIndexStr, 10);
+
+  if (draggedIndex !== index && draggedIndex >= 0) {
+    const movedItem = flashcards.value[draggedIndex];
+    flashcards.value.splice(draggedIndex, 1);
+    flashcards.value.splice(index, 0, movedItem);
+  }
+};
+
+const handleDragEnd = () => {
+  draggedIndex = -1;
 };
 </script>
