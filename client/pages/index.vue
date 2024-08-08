@@ -32,7 +32,7 @@ const router = useRouter();
 
 const handleCreate = () => {
   if (userStore.user) {
-    router.push("/flashcards/edit");
+    router.push("/edit");
   } else {
     router.push("/auth/login");
   }

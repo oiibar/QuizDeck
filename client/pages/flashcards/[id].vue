@@ -2,20 +2,21 @@
   <div class="container">
     <h1 class="text-5xl font-bold text-center">{{ flashcard?.title }}</h1>
 
-    <div class="relative perspective-1000">
+    <div
+      class="w-full flex items-center justify-center bg-grayBg text-3xl rounded-lg perspective"
+    >
       <div
-        class="flashcard relative w-full h-64 perspective-1000 rounded-lg overflow-hidden"
-        :class="{ 'flip-card-active': isFlipped }"
+        class="relative w-full py-64 transform-style-preserve-3d transition-transform duration-500 cursor-pointer"
+        :class="{ 'rotate-x-180': isFlipped }"
         @click="toggleFlip"
       >
         <div
-          class="flashcard-side absolute w-full h-full backface-hidden flex items-center justify-center bg-grayBg text-3xl rounded-lg"
+          class="absolute inset-0 flex items-center justify-center backface-hidden"
         >
           {{ currentFlashcard.question }}
         </div>
-
         <div
-          class="flashcard-side absolute w-full h-full backface-hidden transform rotate-x-180 flex items-center justify-center bg-grayBg text-3xl rounded-lg"
+          class="absolute inset-0 flex items-center justify-center backface-hidden rotate-x-180"
         >
           {{ currentFlashcard.answer }}
         </div>
@@ -49,14 +50,19 @@
           >
             {{ userStore.user.username.charAt(0).toUpperCase() }}
           </div>
-          <div class="text-gray-400">
-            <p class="text-xs">Created by</p>
-            <p class="text-white">{{ flashcard?.user.username }}</p>
-            <p class="text-xs">Created 13 hours ago</p>
+          <div class="text-gray-400 text-xs">
+            <p>Created by</p>
+            <p class="text-white text-lg">
+              {{ flashcard ? flashcard.user.username : "" }}
+            </p>
+            <p>
+              {{ flashcard ? formatDate(flashcard.createdAt) : "" }}
+            </p>
           </div>
         </div>
         <div class="flex items-center gap-2">
           <button
+            @click="navigateToEditPage"
             class="bg-transparent border-2 rounded-md p-1 border-grayBg hover:bg-gray-300"
           >
             <img src="~/assets/create.svg" alt="Edit" class="w-6" />
@@ -83,6 +89,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { formatDistanceToNow } from "date-fns";
 
 import { useFlashcardStore } from "~/stores/flashcards";
 import type { Flashcard } from "~/types/types";
@@ -105,6 +112,13 @@ const currentFlashcard = computed(() => {
     }
   );
 });
+
+const navigateToEditPage = () => {
+  const id = flashcard.value?.id;
+  if (id) {
+    router.push(`/edit/${id}`);
+  }
+};
 
 const toggleFlip = () => {
   isFlipped.value = !isFlipped.value;
@@ -130,6 +144,9 @@ const handleDelete = async () => {
   router.push("/library");
 };
 
+const formatDate = (date: Date) =>
+  formatDistanceToNow(new Date(date), { addSuffix: true });
+
 onMounted(async () => {
   const id = router.currentRoute.value.params.id as string;
   flashcard.value = await flashcardStore.getFlashcard(id);
@@ -137,24 +154,23 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.perspective-1000 {
+.perspective {
   perspective: 1000px;
 }
 
-.flashcard {
+.transform-style-preserve-3d {
   transform-style: preserve-3d;
-  transition: transform 0.6s;
 }
 
-.flip-card-active {
-  transform: rotateX(180deg);
-}
-
-.flashcard-side {
+.backface-hidden {
   backface-visibility: hidden;
 }
 
-.flashcard-side:last-of-type {
+.rotate-x-180 {
   transform: rotateX(180deg);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

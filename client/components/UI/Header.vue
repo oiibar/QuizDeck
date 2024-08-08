@@ -16,9 +16,7 @@
           <img src="~/assets/library.svg" alt="Library" class="w-6" />
         </NuxtLink>
 
-        <NuxtLink
-          to="/flashcards/edit"
-          class="hover:bg-grayBg rounded-lg p-1 tooltip"
+        <NuxtLink to="/edit" class="hover:bg-grayBg rounded-lg p-1 tooltip"
           ><span class="tooltiptext">Create</span>
           <img src="~/assets/create.svg" alt="Library" class="w-6" />
         </NuxtLink>
@@ -43,11 +41,11 @@
     </div>
 
     <div v-else class="flex flex-col gap-4">
-      <NuxtLink to="/auth/signup" class="bg-blueAc p-2 rounded-md"
-        >Sign Up</NuxtLink
+      <NuxtLink to="/auth/signup" class="bg-blueAc p-1 rounded-md"
+        >Join</NuxtLink
       >
 
-      <NuxtLink to="/auth/login" class="bg-blueAc p-2 rounded-md"
+      <NuxtLink to="/auth/login" class="bg-blueAc p-1 rounded-md"
         >Login</NuxtLink
       >
     </div>

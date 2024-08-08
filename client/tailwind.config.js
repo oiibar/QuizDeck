@@ -10,12 +10,6 @@ export default {
   ],
   theme: {
     extend: {
-      perspective: {
-        1000: "1000px",
-      },
-      rotate: {
-        "x-180": "rotateX(180deg)",
-      },
       colors: {
         darkBg: "#0A092D",
         blueAc: "#423ED8",
@@ -24,19 +18,5 @@ export default {
       },
     },
   },
-  plugins: [
-    function ({ addUtilities }) {
-      addUtilities({
-        ".perspective-1000": {
-          perspective: "1000px",
-        },
-        ".backface-hidden": {
-          backfaceVisibility: "hidden",
-        },
-        ".rotate-x-180": {
-          transform: "rotateX(180deg)",
-        },
-      });
-    },
-  ],
+  plugins: [],
 };
