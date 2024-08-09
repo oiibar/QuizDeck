@@ -1,6 +1,3 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "types": ["@nuxtjs/toast"]
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }

@@ -80,6 +80,10 @@ const flashcards = ref<Array<{ question: string; answer: string }>>([]);
 
 let draggedIndex = -1;
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
 const addFlashcard = () => {
   flashcards.value.push({ question: "", answer: "" });
 };
@@ -94,6 +98,17 @@ const handleCreate = async () => {
       throw new Error("Title and description must not be empty.");
     }
 
+    const hasValidFlashcard = flashcards.value.some(
+      (flashcard) =>
+        flashcard.question.trim() !== "" && flashcard.answer.trim() !== ""
+    );
+
+    if (!hasValidFlashcard) {
+      throw new Error(
+        "Please add at least one valid question and answer pair."
+      );
+    }
+
     const response = await flashcardStore.createFlashcard({
       title: title.value,
       pinned: false,
@@ -106,7 +121,6 @@ const handleCreate = async () => {
   }
 };
 
-// Drag-and-drop handlers
 const handleDragStart = (event: DragEvent, index: number) => {
   draggedIndex = index;
   event.dataTransfer!.setData("text/plain", `${index}`);
