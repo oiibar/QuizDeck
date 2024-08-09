@@ -103,6 +103,7 @@ const router = useRouter();
 const showPassword = ref(false);
 const email = ref("oiibar@gmail.com");
 const password = ref("Beaver@4556");
+const error = ref("");
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
@@ -119,22 +120,11 @@ const login = async () => {
       console.log("User logged in:", userStore.user);
       await router.replace("/library");
     }
-  } catch (error) {
-    // Log the error to the console for debugging
-    console.error("Login failed:", error);
-
-    // Additional handling based on the type of error
-    if (error.response && error.response.data) {
-      // Check the error response from the server
-      const errorData = error.response.data;
-
-      if (errorData.message) {
-        console.error("Error message:", errorData.message);
-      }
-    } else {
-      // Handle generic errors or network issues
-      console.error("An unexpected error occurred:", error.message || error);
-    }
+  } catch (err) {
+    const errorMessage =
+      err.response?.data?.message || "An unexpected error occurred.";
+    error.value = errorMessage;
+    console.error("Error:", errorMessage);
   }
 };
 </script>
