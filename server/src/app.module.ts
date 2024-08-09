@@ -1,28 +1,38 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as fs from 'fs';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { FlashcardsModule } from './flashcards/flashcard.module';
-import * as fs from 'fs';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Make the configuration available globally
+    }),
     AuthModule,
     UserModule,
     FlashcardsModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'quizdeck-quizdeck.l.aivencloud.com',
-      port: 20021,
-      username: 'avnadmin',
-      password: 'AVNS_OTnJxYpuQhI0wYKf7xC',
-      database: 'defaultdb',
-      entities: [__dirname + '/**/*.entity{.js, .ts}'],
-      synchronize: true,
-      ssl: {
-        rejectUnauthorized: true,
-        ca: fs.readFileSync('src/ca.pem').toString(),
-      },
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [__dirname + '/**/*.entity{.js, .ts}'],
+        synchronize: true,
+        ssl: {
+          rejectUnauthorized: true,
+          ca: fs
+            .readFileSync(configService.get<string>('DB_SSL_CA_PATH'))
+            .toString(),
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
 })
