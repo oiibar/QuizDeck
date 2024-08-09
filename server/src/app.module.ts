@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import * as fs from 'fs';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { FlashcardsModule } from './flashcards/flashcard.module';
 
 @Module({
@@ -11,22 +9,15 @@ import { FlashcardsModule } from './flashcards/flashcard.module';
     AuthModule,
     UserModule,
     FlashcardsModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        synchronize: true,
-        ssl: {
-          rejectUnauthorized: true,
-          ca: fs.readFileSync('src/ca.pem').toString(),
-        },
-        entities: [__dirname + '/**/*.entity{.js, .ts}'],
-      }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: '123',
+      database: 'quizdeck',
+      entities: [__dirname + '/**/*.entity{.js, .ts}'],
+      synchronize: true,
     }),
   ],
 })
