@@ -8,12 +8,12 @@ import { FlashcardsModule } from './flashcards/flashcard.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true, // Make the configuration available globally
-    }),
     AuthModule,
     UserModule,
     FlashcardsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
