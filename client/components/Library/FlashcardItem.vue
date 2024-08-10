@@ -71,24 +71,6 @@ const handlePinClick = async (event: MouseEvent) => {
     isPinned.value = !isPinned.value;
   }
 };
-
-// const updateFlashcards = async (id: number, data: Flashcard) => {
-//   try {
-//     const res = await $fetch<Flashcard[]>(
-//       `http://localhost:10000/api/flashcards/${id}`,
-//       {
-//         method: "PATCH",
-//         body: JSON.stringify(data),
-//         headers: {
-//           Authorization: `Bearer ${userStore.token}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//   } catch (error) {
-//     console.error("Failed to update flashcard:", error);
-//   }
-// };
 </script>
 
 <style scoped></style>

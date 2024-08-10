@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <div v-if="loading" class="flex justify-center items-center"></div>
 
     <div v-else class="flex flex-wrap gap-4 justify-center">
@@ -10,7 +10,7 @@
           v-for="flashcard in filteredFlashcards"
           :key="flashcard.id"
           :flashcard="flashcard"
-          @click="navigateToFlashcard(flashcard.id)"
+          @click="showModeSelector(flashcard.id)"
         />
       </div>
 
@@ -18,6 +18,13 @@
         No flashcards found
       </p>
     </div>
+
+    <!-- Modal Component -->
+    <ModeSelectorModal
+      :visible="isModalVisible"
+      @close="closeModal"
+      @choose="navigateToMode"
+    />
   </div>
 </template>
 
@@ -26,6 +33,7 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import FlashcardItem from "~/components/Library/FlashcardItem.vue";
 import Queries from "~/components/Library/Queries.vue";
+import ModeSelectorModal from "~/components/Library/ModeSelectorModal.vue";
 
 const props = defineProps({
   flashcards: {
@@ -39,6 +47,8 @@ const flashcards = ref(props.flashcards);
 const searchQuery = ref("");
 const selectedSort = ref("relevance");
 const router = useRouter();
+const isModalVisible = ref(false);
+const currentFlashcardId = ref<string | null>(null);
 
 const filteredFlashcards = computed(() => {
   const searchFiltered = flashcards.value.filter((flashcard) =>
@@ -79,8 +89,23 @@ const filteredFlashcards = computed(() => {
   return [...sortedPinnedFlashcards, ...sortedNonPinnedFlashcards];
 });
 
-const navigateToFlashcard = (id: string) => {
-  router.push(`/flashcards/${id}`);
+const showModeSelector = (id: string) => {
+  currentFlashcardId.value = id;
+  isModalVisible.value = true;
+};
+
+const closeModal = () => {
+  isModalVisible.value = false;
+};
+
+const navigateToMode = (mode: string) => {
+  if (currentFlashcardId.value) {
+    const route =
+      mode === "test"
+        ? `/test/${currentFlashcardId.value}`
+        : `/flashcards/${currentFlashcardId.value}`;
+    router.replace(route);
+  }
 };
 
 const handleSearch = (query: string) => {

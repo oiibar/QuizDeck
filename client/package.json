@@ -20,6 +20,7 @@
     "nuxt": "^3.12.4",
     "pinia": "^2.2.0",
     "postinstall": "^0.10.3",
+    "shadcn-nuxt": "^0.10.4",
     "vue": "latest"
   },
   "devDependencies": {

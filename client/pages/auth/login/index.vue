@@ -120,11 +120,8 @@ const login = async () => {
       console.log("User logged in:", userStore.user);
       await router.replace("/library");
     }
-  } catch (err) {
-    const errorMessage =
-      err.response?.data?.message || "An unexpected error occurred.";
-    error.value = errorMessage;
-    console.error("Error:", errorMessage);
+  } catch (error) {
+    console.log("Login failed:", error);
   }
 };
 </script>

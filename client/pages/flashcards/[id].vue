@@ -141,7 +141,7 @@ const prevFlashcard = () => {
 const handleDelete = async () => {
   const id = router.currentRoute.value.params.id as string;
   await flashcardStore.deleteFlashcard(id);
-  router.push("/library");
+  router.replace("/library");
 };
 
 const formatDate = (date: Date) =>

@@ -183,7 +183,7 @@ const signup = async () => {
         email: email.value,
         password: password.value,
       });
-      await router.push("/profile");
+      await router.replace("/profile");
     }
   } catch (error) {
     console.error("Sign up failed:", error);
