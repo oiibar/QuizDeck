@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { FlashcardGroup } from './entities/flashcards.entity';
 import { CreateFlashcardGroupDto } from './dto/create-flashcards.dto';
 import { UpdateFlashcardGroupDto } from './dto/update-flashcards.dto';
@@ -34,11 +34,26 @@ export class FlashcardService {
       title: createFlashcardDto.title,
       description: createFlashcardDto.description,
       flashcards: createFlashcardDto.flashcards,
+      isPublic: createFlashcardDto.isPublic,
       pinned: createFlashcardDto.pinned,
       user: { id },
     });
 
     return await this.flashcardRepository.save(newFlashcardGroup);
+  }
+
+  async findAllPublic(userId?: number) {
+    const whereConditions = {
+      isPublic: true,
+    };
+
+    if (userId) {
+      whereConditions['user'] = { id: Not(userId) };
+    }
+
+    return await this.flashcardRepository.find({
+      where: whereConditions,
+    });
   }
 
   async findAll(userId: number) {

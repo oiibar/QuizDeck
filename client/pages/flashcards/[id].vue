@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1 class="text-5xl font-bold text-center">{{ flashcard?.title }}</h1>
+    <h1 class="text-5xl font-bold text-center">
+      {{ flashcard?.title }}
+    </h1>
 
     <div
       class="w-full flex items-center justify-center bg-grayBg text-3xl rounded-lg perspective"
@@ -60,7 +62,7 @@
             </p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
+        <div v-if="isOwner" class="flex items-center gap-2">
           <button
             @click="navigateToEditPage"
             class="bg-transparent border-2 rounded-md p-1 border-grayBg hover:bg-gray-300"
@@ -92,17 +94,23 @@ import { useRouter } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
 
 import { useFlashcardStore } from "~/stores/flashcards";
-import type { Flashcard } from "~/types/types";
 import { useUserStore } from "~/stores/user";
 import ConfirmationModal from "~/components/Flashcard/ConfirmModal.vue";
+import type { Flashcard } from "~/types/types";
+
+const props = defineProps<{
+  flashcard: Flashcard;
+}>();
 
 const userStore = useUserStore();
 const router = useRouter();
 const flashcardStore = useFlashcardStore();
-const flashcard = ref<Flashcard | null>(null);
+const flashcard = ref<Flashcard | null>(props.flashcard);
 const showModal = ref(false);
 const currentIndex = ref(0);
 const isFlipped = ref(false);
+
+const isOwner = computed(() => flashcard.value?.user.id === userStore.user.id);
 
 const currentFlashcard = computed(() => {
   return (
@@ -116,7 +124,7 @@ const currentFlashcard = computed(() => {
 const navigateToEditPage = () => {
   const id = flashcard.value?.id;
   if (id) {
-    router.push(`/edit/${id}`);
+    router.replace(`/edit/${id}`);
   }
 };
 

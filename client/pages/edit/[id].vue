@@ -16,6 +16,9 @@
         >
           Update
         </button>
+        <input type="checkbox" v-model="isPublic" id="isPublic" class="mr-2" />
+        <span class="text-sm ml-2">{{ isPublic ? "Public" : "Private" }}</span>
+        <!-- Dynamic text -->
       </div>
     </div>
 
@@ -72,11 +75,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import FlashcardItem from "~/components/Create/FlashcardItem.vue";
 import { useFlashcardStore } from "~/stores/flashcards";
 import type { Flashcard } from "~/types/types";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
+const isPublic = ref(false);
 const router = useRouter();
 const flashcardStore = useFlashcardStore();
 
@@ -122,10 +128,13 @@ const handleUpdate = async () => {
       pinned: flashcard.value?.pinned ?? false,
       description: description.value,
       flashcards: flashcards.value,
+      isPublic: isPublic.value, // Include isPublic
     });
+    toast.success("Updated flashcard successfully");
+
     router.push("/library");
   } catch (error) {
-    console.error("Failed to update flashcard:", error.message);
+    toast.error("Check fields and try again");
   }
 };
 
@@ -138,6 +147,7 @@ onMounted(async () => {
     title.value = flashcard.value.title;
     description.value = flashcard.value.description;
     flashcards.value = flashcard.value.flashcards;
+    isPublic.value = flashcard.value.isPublic; // Set isPublic
   }
 });
 

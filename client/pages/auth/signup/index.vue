@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useUserStore } from "~/stores/user";
+import { useUserStore } from "@/stores/user";
 import { useRouter } from "#app";
 import google from "@/assets/auth/google.svg";
 import github from "@/assets/auth/github.svg";
@@ -153,6 +153,8 @@ const email = ref("");
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
@@ -183,10 +185,12 @@ const signup = async () => {
         email: email.value,
         password: password.value,
       });
-      await router.replace("/profile");
+      toast.success("Signed up in successfully");
+
+      await router.replace("/library");
     }
   } catch (error) {
-    console.error("Sign up failed:", error);
+    toast.error("Check fields and try again");
   }
 };
 </script>

@@ -90,6 +90,8 @@ import unlockedIcon from "@/assets/auth/unlocked.svg";
 import closedIcon from "@/assets/auth/closed.svg";
 import openIcon from "@/assets/auth/open.svg";
 import userIcon from "@/assets/auth/user.svg";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 import { ref, computed } from "vue";
 import { useUserStore } from "~/stores/user";
@@ -127,9 +129,10 @@ const updateProfile = async () => {
     username.value = "";
     password.value = "";
     confirmPassword.value = "";
+    toast.success("Profile updated successfully");
     router.push("/profile");
   } catch (error) {
-    console.error("Update failed:", error);
+    toast.error("Check fields and try again");
   }
 };
 

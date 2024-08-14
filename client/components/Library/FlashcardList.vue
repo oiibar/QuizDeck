@@ -19,7 +19,6 @@
       </p>
     </div>
 
-    <!-- Modal Component -->
     <ModeSelectorModal
       :visible="isModalVisible"
       @close="closeModal"
@@ -29,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import FlashcardItem from "~/components/Library/FlashcardItem.vue";
 import Queries from "~/components/Library/Queries.vue";
@@ -39,6 +38,10 @@ const props = defineProps({
   flashcards: {
     type: Array,
     required: true,
+  },
+  title: {
+    type: String,
+    default: "",
   },
 });
 

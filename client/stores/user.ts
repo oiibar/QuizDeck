@@ -26,9 +26,9 @@ export const useUserStore = defineStore("user", () => {
       setToken(res.token);
       await profile();
     } catch (error) {
+      console.log(error);
       setToken();
       setUser();
-      console.log(error);
     }
   };
 
@@ -90,8 +90,8 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const logout = async () => {
-    setToken();
     setUser();
+    setToken();
   };
 
   return { user, token, login, signup, profile, logout, updateProfile };

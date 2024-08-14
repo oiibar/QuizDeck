@@ -12,6 +12,8 @@
         >
           Create
         </button>
+        <input type="checkbox" v-model="isPublic" id="isPublic" class="mr-2" />
+        <span class="text-sm">{{ isPublic ? "Public" : "Private" }}</span>
       </div>
     </div>
 
@@ -71,9 +73,12 @@ import { ref } from "vue";
 import FlashcardItem from "~/components/Create/FlashcardItem.vue";
 import { useFlashcardStore } from "~/stores/flashcards";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const flashcardStore = useFlashcardStore();
 const title = ref("");
+const isPublic = ref(false);
 const description = ref("");
 const router = useRouter();
 const flashcards = ref<Array<{ question: string; answer: string }>>([]);
@@ -114,10 +119,13 @@ const handleCreate = async () => {
       pinned: false,
       description: description.value,
       flashcards: flashcards.value,
+      isPublic: isPublic.value, // Ensure this is included
     });
+    toast.success("Created flashcard successfully");
+
     router.push(`/library`);
   } catch (error) {
-    console.error("Failed to create flashcard:", error.message);
+    toast.error("Fill all necessary fields");
   }
 };
 

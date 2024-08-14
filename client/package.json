@@ -14,19 +14,20 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@nuxtjs/toast": "^0.0.1",
     "@pinia/nuxt": "^0.5.2",
+    "@types/vue": "^2.0.0",
     "date-fns": "^3.6.0",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.0",
     "postinstall": "^0.10.3",
-    "shadcn-nuxt": "^0.10.4",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@nuxt/types": "^2.18.1",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.40",
-    "tailwindcss": "^3.4.7"
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.5.4"
   }
 }

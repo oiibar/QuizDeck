@@ -5,7 +5,7 @@
       <p class="text-xl font-semibold">Choose matching answer</p>
       <div class="space-y-2">
         <div
-          class="p-4 border-2 border-gray-600 hover:border-gray-300 rounded-lg shadow-sm cursor-pointer transition-colors bg-gray-500 border-gray-300"
+          class="p-4 border-2 hover:border-gray-300 rounded-lg shadow-sm cursor-pointer transition-colors bg-gray-500 border-gray-300"
         >
           Answer
         </div>

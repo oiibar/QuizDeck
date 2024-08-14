@@ -86,8 +86,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useUserStore } from "~/stores/user";
+import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
 import { useRouter } from "#app";
 import google from "@/assets/auth/google.svg";
 import github from "@/assets/auth/github.svg";
@@ -96,14 +96,15 @@ import passwordIcon from "@/assets/auth/password.svg";
 import unlockedIcon from "@/assets/auth/unlocked.svg";
 import closedIcon from "@/assets/auth/closed.svg";
 import openIcon from "@/assets/auth/open.svg";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const userStore = useUserStore();
 const router = useRouter();
 
 const showPassword = ref(false);
-const email = ref("oiibar@gmail.com");
-const password = ref("Beaver@4556");
-const error = ref("");
+const email = ref("");
+const password = ref("");
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
@@ -117,11 +118,11 @@ const login = async () => {
     });
 
     if (userStore.user) {
-      console.log("User logged in:", userStore.user);
+      toast.success("Logged in successfully");
       await router.replace("/library");
     }
   } catch (error) {
-    console.log("Login failed:", error);
+    toast.error("Email or password is incorrect");
   }
 };
 </script>

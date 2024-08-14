@@ -41,8 +41,11 @@ export class FlashcardGroupDto {
   @IsString()
   title: string;
 
-  @IsBoolean()
   @IsNotEmpty()
+  @IsBoolean()
+  isPublic: boolean;
+
+  @IsBoolean()
   pinned: boolean;
 
   @IsNotEmpty()

@@ -25,6 +25,11 @@ export class FlashcardGroup {
   description: string;
 
   @Column({ default: false })
+  @IsNotEmpty()
+  @IsBoolean()
+  isPublic: boolean;
+
+  @Column({ default: false })
   @IsBoolean()
   @IsNotEmpty()
   pinned: boolean;

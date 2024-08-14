@@ -22,8 +22,16 @@ export class FlashcardController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
   findAll(@Req() req) {
     return this.flashcardService.findAll(+req.user.id);
+  }
+
+  @Get('public')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
+  findAllPublic(@Req() req) {
+    return this.flashcardService.findAllPublic(+req.user.id);
   }
 
   @Post()

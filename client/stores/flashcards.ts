@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Flashcard, flashcardGroups } from "~/types/types";
+import type { Flashcard, flashcardGroups } from "@/types/types";
 
 const BASE_URL = "http://localhost:10000/api";
 
@@ -17,6 +17,19 @@ export const useFlashcardStore = defineStore("flashcards", () => {
       flashcards.value = res;
     } catch (error) {
       console.error("Failed to fetch flashcards:", error);
+    }
+  };
+
+  const fetchPublicFlashcards = async () => {
+    try {
+      const res = await $fetch<Flashcard[]>(`${BASE_URL}/flashcards/public`, {
+        headers: {
+          Authorization: `Bearer ${userStore.token}`,
+        },
+      });
+      return res;
+    } catch (error) {
+      console.error("Failed to fetch public flashcards:", error);
     }
   };
 
@@ -85,5 +98,6 @@ export const useFlashcardStore = defineStore("flashcards", () => {
     createFlashcard,
     updateFlashcards,
     deleteFlashcard,
+    fetchPublicFlashcards,
   };
 });

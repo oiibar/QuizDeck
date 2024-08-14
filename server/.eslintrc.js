@@ -14,6 +14,7 @@ module.exports = {
   env: {
     node: true,
     jest: true,
+    'vue/setup-compiler-macros': true,
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {

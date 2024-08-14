@@ -20,12 +20,23 @@
             {{ flashcard.user.username }}
           </p>
         </div>
-        <div class="pl-2">
+        <div v-if="isOwner" class="pl-2 border-r-2 border-white pr-2">
           <img
             :src="isPinned ? pin : unpin"
             alt="Pin"
             class="w-6 cursor-pointer"
             @click="handlePinClick"
+          />
+        </div>
+        <div class="pl-2 pr-2">
+          {{ flashcard.isPublic ? "Public" : "Private" }}
+        </div>
+        <div v-if="!isOwner" class="pl-2 border-l-2 border-white pr-2">
+          <img
+            class="w-6 cursor-pointer"
+            :src="isLiked ? like : nolike"
+            alt="Like"
+            @click="handleLikeClick"
           />
         </div>
       </div>
@@ -36,10 +47,12 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { defineProps, ref, computed } from "vue";
 import type { Flashcard } from "~/types";
 import pin from "~/assets/pin.svg";
 import unpin from "~/assets/unpin.svg";
+import nolike from "~/assets/nolike.svg";
+import like from "~/assets/like.svg";
 import { useUserStore } from "~/stores/user";
 import { useFlashcardStore } from "~/stores/flashcards";
 
@@ -53,6 +66,9 @@ const props = defineProps({
 });
 
 const isPinned = ref(props.flashcard.pinned);
+const isLiked = ref(props.flashcard.isLiked); // Add this line to track the like status
+
+const isOwner = computed(() => props.flashcard.user.id === userStore.user.id);
 
 const handlePinClick = async (event: MouseEvent) => {
   event.stopPropagation();
@@ -71,6 +87,10 @@ const handlePinClick = async (event: MouseEvent) => {
     isPinned.value = !isPinned.value;
   }
 };
-</script>
 
-<style scoped></style>
+const handleLikeClick = async (event: MouseEvent) => {
+  event.stopPropagation();
+
+  isLiked.value = !isLiked.value;
+};
+</script>
