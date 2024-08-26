@@ -54,7 +54,7 @@
       </button>
       <div
         class="w-10 h-10 flex items-center justify-center rounded-full bg-purpleAc cursor-pointer"
-        @click="() => router.push('/profile')"
+        @click="() => navigateTo('/profile')"
         title="Profile"
       >
         {{ userStore.user.username.charAt(0).toUpperCase() }}
@@ -73,11 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import { useUserStore } from "~/stores/user";
-import { useRouter } from "#app";
 
-const router = useRouter();
 const userStore = useUserStore();
 const route = useRoute();
 
@@ -87,7 +84,7 @@ const isActive = (path: string) => {
 
 const signout = () => {
   userStore.logout();
-  router.push("/auth/login");
+  navigateTo("/auth/login");
 };
 </script>
 

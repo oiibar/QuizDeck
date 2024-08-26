@@ -22,7 +22,7 @@
             <div
               class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
             >
-              <img :src="emailIcon" alt="" class="w-4" />
+              <img src="~/assets/auth/email.svg" alt="" class="w-4" />
             </div>
           </div>
 
@@ -37,7 +37,7 @@
               class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
             >
               <img
-                :src="showPassword ? unlockedIcon : passwordIcon"
+                :src="showPassword ? unlocked : passwordIcon"
                 alt=""
                 class="w-4"
               />
@@ -46,11 +46,7 @@
               class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
               @click="togglePasswordVisibility"
             >
-              <img
-                :src="showPassword ? openIcon : closedIcon"
-                alt=""
-                class="w-4"
-              />
+              <img :src="showPassword ? open : closed" alt="" class="w-4" />
             </div>
           </div>
           <button class="bg-[#2F80ED] rounded-xl px-4 py-2 text-white w-full">
@@ -63,14 +59,14 @@
         <div class="flex gap-4">
           <a href="">
             <img
-              :src="google"
+              src="~/assets/auth/google.svg"
               alt=""
               class="border w-8 border-[#BDBDBD] rounded-full p-2 transition duration-300 ease-in-out hover:scale-150 hover:text-white"
             />
           </a>
           <a href="">
             <img
-              :src="github"
+              src="~/assets/auth/github.svg"
               alt=""
               class="border w-8 border-[#BDBDBD] rounded-full p-2 transition duration-300 ease-in-out hover:scale-150 hover:text-white"
             />
@@ -86,22 +82,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useUserStore } from "@/stores/user";
-import { useRouter } from "#app";
-import google from "@/assets/auth/google.svg";
-import github from "@/assets/auth/github.svg";
-import emailIcon from "@/assets/auth/email.svg";
-import passwordIcon from "@/assets/auth/password.svg";
-import unlockedIcon from "@/assets/auth/unlocked.svg";
-import closedIcon from "@/assets/auth/closed.svg";
-import openIcon from "@/assets/auth/open.svg";
 import { useToast } from "vue-toastification";
+import unlocked from "~/assets/auth/unlocked.svg";
+import passwordIcon from "~/assets/auth/password.svg";
+import open from "~/assets/auth/open.svg";
+import closed from "~/assets/auth/closed.svg";
+
 const toast = useToast();
-
 const userStore = useUserStore();
-const router = useRouter();
-
 const showPassword = ref(false);
 const email = ref("");
 const password = ref("");
@@ -119,7 +107,7 @@ const login = async () => {
 
     if (userStore.user) {
       toast.success("Logged in successfully");
-      await router.replace("/library");
+      await navigateTo("/library");
     }
   } catch (error) {
     toast.error("Email or password is incorrect");

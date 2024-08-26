@@ -12,7 +12,12 @@
         >
           Create
         </button>
-        <input type="checkbox" v-model="isPublic" id="isPublic" class="mr-2" />
+        <input
+          type="checkbox"
+          v-model="isPublic"
+          id="isPublic"
+          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
         <span class="text-sm">{{ isPublic ? "Public" : "Private" }}</span>
       </div>
     </div>
@@ -48,7 +53,7 @@
           @drop="handleDrop($event, index)"
           @dragend="handleDragEnd"
         >
-          <FlashcardItem
+          <QABlock
             :flashcard="flashcard"
             :index="index"
             @remove="removeFlashcard"
@@ -69,19 +74,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import FlashcardItem from "~/components/Create/FlashcardItem.vue";
 import { useFlashcardStore } from "~/stores/flashcards";
-import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
+import type { Flashcard } from "~/types/types";
 
 const toast = useToast();
 const flashcardStore = useFlashcardStore();
 const title = ref("");
 const isPublic = ref(false);
 const description = ref("");
-const router = useRouter();
-const flashcards = ref<Array<{ question: string; answer: string }>>([]);
+const flashcards = ref<Flashcard[]>([]);
 
 let draggedIndex = -1;
 
@@ -114,16 +116,16 @@ const handleCreate = async () => {
       );
     }
 
-    const response = await flashcardStore.createFlashcard({
+    await flashcardStore.createFlashcard({
       title: title.value,
       pinned: false,
       description: description.value,
       flashcards: flashcards.value,
-      isPublic: isPublic.value, // Ensure this is included
+      isPublic: isPublic.value,
     });
     toast.success("Created flashcard successfully");
 
-    router.push(`/library`);
+    navigateTo("/library");
   } catch (error) {
     toast.error("Fill all necessary fields");
   }

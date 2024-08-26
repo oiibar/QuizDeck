@@ -34,7 +34,10 @@ export class FlashcardGroup {
   @IsNotEmpty()
   pinned: boolean;
 
-  @ManyToOne(() => User, (user) => user.flashcardGroups, { eager: true })
+  @ManyToOne(() => User, (user) => user.flashcardGroups, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @CreateDateColumn()

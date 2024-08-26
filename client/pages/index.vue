@@ -23,48 +23,42 @@
     </div>
 
     <div v-if="pinnedFlashcards.length" class="mt-8">
-      <FlashcardList :flashcards="pinnedFlashcards" />
+      <LibraryList :flashcards="pinnedFlashcards" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useUserStore } from "~/stores/user";
-import { useRouter } from "#app";
-import { useFlashcardStore } from "~/stores/flashcards";
-import FlashcardList from "~/components/Library/FlashcardList.vue";
-
 const userStore = useUserStore();
-const router = useRouter();
 const flashcardStore = useFlashcardStore();
-
 const pinnedFlashcards = ref([]);
+
+definePageMeta({
+  middleware: ["auth"],
+});
 
 onMounted(async () => {
   if (userStore.user) {
     await flashcardStore.fetchFlashcards();
-    flashcardStore.flashcards.map((flashcard) => {
-      if (flashcard.pinned) {
-        pinnedFlashcards.value.push(flashcard);
-      }
-    });
+    pinnedFlashcards.value = flashcardStore.flashcards.filter(
+      (fc) => fc.pinned
+    );
   }
 });
 
 const handleCreate = () => {
   if (userStore.user) {
-    router.push("/edit");
+    navigateTo("/edit");
   } else {
-    router.push("/auth/login");
+    navigateTo("/auth/login");
   }
 };
 
 const handleLibrary = () => {
   if (userStore.user) {
-    router.push("/library");
+    navigateTo("/library");
   } else {
-    router.push("/auth/login");
+    navigateTo("/auth/login");
   }
 };
 </script>

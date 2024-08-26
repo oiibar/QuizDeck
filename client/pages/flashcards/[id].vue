@@ -32,7 +32,7 @@
       >
         <img src="~/assets/arrow_left.svg" alt="<-" class="w-8" />
       </button>
-      <p>{{ currentIndex + 1 }}/{{ flashcard?.flashcards?.length }}</p>
+      <p>{{ currentIndex + 1 }}/{{ flashcard?.flashcards.length }}</p>
       <button
         class="bg-transparent border-2 border-gray-500 hover:bg-gray-300 rounded-full p-2"
         @click="nextFlashcard"
@@ -48,14 +48,13 @@
         <div class="flex items-center gap-4">
           <div
             class="w-16 h-16 flex items-center justify-center text-3xl rounded-full bg-purpleAc text-white cursor-pointer hover:bg-purpleAc transition-colors duration-200"
-            @click="navigateToProfile"
           >
             {{ userStore.user.username.charAt(0).toUpperCase() }}
           </div>
           <div class="text-gray-400 text-xs">
             <p>Created by</p>
             <p class="text-white text-lg">
-              {{ flashcard ? flashcard.user.username : "" }}
+              {{ flashcard?.user.username }}
             </p>
             <p>
               {{ flashcard ? formatDate(flashcard.createdAt) : "" }}
@@ -80,7 +79,7 @@
       <p>{{ flashcard?.description }}</p>
     </div>
 
-    <ConfirmationModal
+    <DeleteConfirmModal
       :isVisible="showModal"
       @confirm="handleDelete"
       @cancel="showModal = false"
@@ -89,28 +88,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useUserStore } from "~/stores/user";
+import { useFlashcardStore } from "~/stores/flashcards";
+import type { flashcardGroups } from "~/types/types";
 import { formatDistanceToNow } from "date-fns";
 
-import { useFlashcardStore } from "~/stores/flashcards";
-import { useUserStore } from "~/stores/user";
-import ConfirmationModal from "~/components/Flashcard/ConfirmModal.vue";
-import type { Flashcard } from "~/types/types";
-
-const props = defineProps<{
-  flashcard: Flashcard;
-}>();
-
+const route = useRoute();
 const userStore = useUserStore();
-const router = useRouter();
 const flashcardStore = useFlashcardStore();
-const flashcard = ref<Flashcard | null>(props.flashcard);
 const showModal = ref(false);
+const flashcard = ref<flashcardGroups | null>(null);
 const currentIndex = ref(0);
 const isFlipped = ref(false);
 
-const isOwner = computed(() => flashcard.value?.user.id === userStore.user.id);
+const isOwner = computed(() => {
+  return flashcard.value?.user.id === userStore.user.id;
+});
 
 const currentFlashcard = computed(() => {
   return (
@@ -124,7 +117,7 @@ const currentFlashcard = computed(() => {
 const navigateToEditPage = () => {
   const id = flashcard.value?.id;
   if (id) {
-    router.replace(`/edit/${id}`);
+    navigateTo(`/edit/${id}`);
   }
 };
 
@@ -147,17 +140,21 @@ const prevFlashcard = () => {
 };
 
 const handleDelete = async () => {
-  const id = router.currentRoute.value.params.id as string;
-  await flashcardStore.deleteFlashcard(id);
-  router.replace("/library");
+  const id = flashcard.value?.id;
+  if (id) {
+    await flashcardStore.deleteFlashcard(id);
+    navigateTo("/library");
+  }
 };
 
-const formatDate = (date: Date) =>
-  formatDistanceToNow(new Date(date), { addSuffix: true });
+const formatDate = (date: Date) => {
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
+};
 
 onMounted(async () => {
-  const id = router.currentRoute.value.params.id as string;
-  flashcard.value = await flashcardStore.getFlashcard(id);
+  const id = route.params.id as string;
+  const response = await flashcardStore.getFlashcard(id);
+  flashcard.value = response;
 });
 </script>
 

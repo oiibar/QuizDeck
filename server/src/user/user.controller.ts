@@ -62,7 +62,7 @@ export class UserController {
     };
   }
 
-  @Put('profile')
+  @Patch('profile')
   @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe())
   async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {

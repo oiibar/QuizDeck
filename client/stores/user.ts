@@ -4,7 +4,7 @@ import type { Login, Signup, User, UserProfile } from "~/types/types";
 const BASE_URL = "http://localhost:10000/api";
 
 export const useUserStore = defineStore("user", () => {
-  const user = ref(0);
+  const user = ref<UserProfile>(null);
   const token = useCookie("MY_COOKIE", {
     maxAge: 60 * 60,
   });
@@ -74,7 +74,7 @@ export const useUserStore = defineStore("user", () => {
 
     try {
       const res = await $fetch(`${BASE_URL}/user/profile`, {
-        method: "PUT",
+        method: "PATCH",
         body: data,
         headers: {
           Authorization: `Bearer ${token.value}`,

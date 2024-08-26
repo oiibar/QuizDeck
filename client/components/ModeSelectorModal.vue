@@ -5,17 +5,19 @@
     @click="handleBackdropClick"
   >
     <div class="bg-white p-6 rounded shadow-lg" @click.stop>
-      <h2 class="text-xl font-semibold mb-4">Confirm Action</h2>
-      <p class="mb-4">{{ message }}</p>
+      <h2 class="text-xl font-semibold mb-4">Select Mode</h2>
       <div class="flex gap-4">
         <button
-          @click="confirm"
+          @click="chooseMode('flashcard')"
           class="bg-blue-500 text-white px-4 py-2 rounded"
         >
-          Yes
+          Flashcard
         </button>
-        <button @click="cancel" class="bg-red-500 text-white px-4 py-2 rounded">
-          No
+        <button
+          @click="chooseMode('test')"
+          class="bg-green-500 text-white px-4 py-2 rounded"
+        >
+          Test
         </button>
       </div>
     </div>
@@ -23,27 +25,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from "vue";
-
 const props = defineProps({
   visible: {
     type: Boolean,
     required: true,
   },
-  message: {
-    type: String,
-    required: true,
-  },
 });
 
-const emit = defineEmits(["close", "confirm"]);
+const emit = defineEmits(["close", "choose"]);
 
-const confirm = () => {
-  emit("confirm");
-  emit("close");
-};
-
-const cancel = () => {
+const chooseMode = (mode: string) => {
+  emit("choose", mode);
   emit("close");
 };
 
@@ -52,6 +44,4 @@ const handleBackdropClick = () => {
 };
 </script>
 
-<style scoped>
-/* Add any specific styling here if needed */
-</style>
+<style scoped></style>

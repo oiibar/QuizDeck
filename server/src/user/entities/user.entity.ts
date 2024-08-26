@@ -26,7 +26,7 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column({ unique: true })
+  @Column()
   @IsNotEmpty()
   @IsString()
   @MinLength(3, { message: 'Username should be at least 3 characters long' })
@@ -45,6 +45,8 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => FlashcardGroup, (flashcardGroup) => flashcardGroup.user)
+  @OneToMany(() => FlashcardGroup, (flashcardGroup) => flashcardGroup.user, {
+    onDelete: 'CASCADE',
+  })
   flashcardGroups: FlashcardGroup[];
 }

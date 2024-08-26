@@ -14,7 +14,7 @@
         <div
           class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
         >
-          <img :src="userIcon" alt="Username" class="w-4" />
+          <img src="~/assets/auth/user.svg" alt="Username" class="w-4" />
         </div>
       </div>
 
@@ -89,16 +89,11 @@ import passwordIcon from "@/assets/auth/password.svg";
 import unlockedIcon from "@/assets/auth/unlocked.svg";
 import closedIcon from "@/assets/auth/closed.svg";
 import openIcon from "@/assets/auth/open.svg";
-import userIcon from "@/assets/auth/user.svg";
 import { useToast } from "vue-toastification";
-const toast = useToast();
-
-import { ref, computed } from "vue";
 import { useUserStore } from "~/stores/user";
-import { useRouter } from "#app";
 
+const toast = useToast();
 const userStore = useUserStore();
-const router = useRouter();
 const username = ref(userStore.user?.username || "");
 const password = ref("");
 const confirmPassword = ref("");
@@ -130,14 +125,9 @@ const updateProfile = async () => {
     password.value = "";
     confirmPassword.value = "";
     toast.success("Profile updated successfully");
-    router.push("/profile");
+    navigateTo("/");
   } catch (error) {
-    toast.error("Check fields and try again");
+    toast.error("All fields are required");
   }
-};
-
-const signout = () => {
-  userStore.logout();
-  router.push("/auth/login");
 };
 </script>

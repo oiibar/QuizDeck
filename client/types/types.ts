@@ -33,6 +33,10 @@ export interface flashcardGroups {
   id: number;
   title: string;
   pinned: boolean;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   description: string;
   flashcards: Array<Flashcard>;
+  user: UserProfile;
 }

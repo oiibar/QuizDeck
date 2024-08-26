@@ -42,14 +42,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
+import type { Flashcard } from "~/types/types";
 
 const props = defineProps<{
-  flashcard: { question: string; answer: string };
+  flashcard: Flashcard;
   index: number;
 }>();
 
-const emit = defineEmits<{ (e: "remove"): void }>();
+const emit = defineEmits<{ (e: "remove", index: number): void }>();
 
 const handleRemove = () => {
   emit("remove", props.index);

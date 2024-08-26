@@ -31,8 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
-
 const emit = defineEmits<{
   (e: "search", query: string): void;
   (e: "sort", sort: string): void;

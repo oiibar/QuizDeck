@@ -1,16 +1,14 @@
 <template>
   <div>
-    <div v-if="loading" class="flex justify-center items-center"></div>
-
-    <div v-else class="flex flex-wrap gap-4 justify-center">
-      <Queries @search="handleSearch" @sort="handleSort" />
+    <div class="flex flex-wrap gap-4 justify-center">
+      <LibraryQueries @search="handleSearch" @sort="handleSort" />
 
       <div v-if="filteredFlashcards.length" class="flex flex-wrap gap-4 w-full">
-        <FlashcardItem
-          v-for="flashcard in filteredFlashcards"
-          :key="flashcard.id"
-          :flashcard="flashcard"
-          @click="showModeSelector(flashcard.id)"
+        <LibraryItem
+          v-for="item in filteredFlashcards"
+          :key="item.id"
+          :flashcard="item"
+          @click="showModeSelector(item.id)"
         />
       </div>
 
@@ -28,33 +26,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps } from "vue";
-import { useRouter } from "vue-router";
-import FlashcardItem from "~/components/Library/FlashcardItem.vue";
-import Queries from "~/components/Library/Queries.vue";
-import ModeSelectorModal from "~/components/Library/ModeSelectorModal.vue";
+import type { flashcardGroups } from "~/types/types";
 
-const props = defineProps({
-  flashcards: {
-    type: Array,
-    required: true,
-  },
-  title: {
-    type: String,
-    default: "",
-  },
-});
+const props = defineProps<{
+  flashcards: flashcardGroups[];
+}>();
 
-const loading = ref(true);
-const flashcards = ref(props.flashcards);
+const { flashcards } = props;
 const searchQuery = ref("");
 const selectedSort = ref("relevance");
-const router = useRouter();
 const isModalVisible = ref(false);
-const currentFlashcardId = ref<string | null>(null);
+const currentFlashcardId = ref<number | null>(null);
 
 const filteredFlashcards = computed(() => {
-  const searchFiltered = flashcards.value.filter((flashcard) =>
+  const searchFiltered = props.flashcards.filter((flashcard) =>
     flashcard.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
@@ -65,7 +50,7 @@ const filteredFlashcards = computed(() => {
     (flashcard) => !flashcard.pinned
   );
 
-  const sortFlashcards = (flashcardsToSort: Flashcard[]) => {
+  const sortFlashcards = (flashcardsToSort: flashcardGroups[]) => {
     return flashcardsToSort.sort((a, b) => {
       switch (selectedSort.value) {
         case "date-desc":
@@ -92,7 +77,7 @@ const filteredFlashcards = computed(() => {
   return [...sortedPinnedFlashcards, ...sortedNonPinnedFlashcards];
 });
 
-const showModeSelector = (id: string) => {
+const showModeSelector = (id: number) => {
   currentFlashcardId.value = id;
   isModalVisible.value = true;
 };
@@ -107,7 +92,7 @@ const navigateToMode = (mode: string) => {
       mode === "test"
         ? `/test/${currentFlashcardId.value}`
         : `/flashcards/${currentFlashcardId.value}`;
-    router.replace(route);
+    navigateTo(route);
   }
 };
 
@@ -118,10 +103,4 @@ const handleSearch = (query: string) => {
 const handleSort = (sort: string) => {
   selectedSort.value = sort;
 };
-
-onMounted(async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  flashcards.value = props.flashcards;
-  loading.value = false;
-});
 </script>

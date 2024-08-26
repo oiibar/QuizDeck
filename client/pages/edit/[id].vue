@@ -18,7 +18,6 @@
         </button>
         <input type="checkbox" v-model="isPublic" id="isPublic" class="mr-2" />
         <span class="text-sm ml-2">{{ isPublic ? "Public" : "Private" }}</span>
-        <!-- Dynamic text -->
       </div>
     </div>
 
@@ -45,7 +44,7 @@
       </div>
       <div class="flex flex-col gap-6" @dragover="handleDragOver">
         <div
-          v-for="(flashcard, index) in flashcards"
+          v-for="(flashcardItem, index) in flashcards"
           :key="index"
           class="bg-grayBg rounded-lg w-full p-3 flex flex-col gap-6"
           draggable="true"
@@ -53,8 +52,8 @@
           @drop="handleDrop($event, index)"
           @dragend="handleDragEnd"
         >
-          <FlashcardItem
-            :flashcard="flashcard"
+          <QABlock
+            :flashcard="flashcardItem"
             :index="index"
             @remove="removeFlashcard"
           />
@@ -74,16 +73,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import FlashcardItem from "~/components/Create/FlashcardItem.vue";
-import { useFlashcardStore } from "~/stores/flashcards";
-import type { Flashcard } from "~/types/types";
 import { useToast } from "vue-toastification";
+import { useFlashcardStore } from "~/stores/flashcards";
+import type { Flashcard, flashcardGroups } from "~/types/types";
 
+const route = useRoute();
 const toast = useToast();
 const isPublic = ref(false);
-const router = useRouter();
 const flashcardStore = useFlashcardStore();
 
 definePageMeta({
@@ -92,8 +88,8 @@ definePageMeta({
 
 const title = ref("");
 const description = ref("");
-const flashcards = ref<Array<{ question: string; answer: string }>>([]);
-const flashcard = ref<Flashcard | null>(null);
+const flashcard = ref<flashcardGroups>({} as flashcardGroups);
+const flashcards = ref<Flashcard[]>([]);
 
 let draggedIndex = -1;
 
@@ -112,8 +108,7 @@ const handleUpdate = async () => {
     }
 
     const hasValidFlashcard = flashcards.value.some(
-      (flashcard) =>
-        flashcard.question.trim() !== "" && flashcard.answer.trim() !== ""
+      (item) => item.question.trim() !== "" && item.answer.trim() !== ""
     );
 
     if (!hasValidFlashcard) {
@@ -122,17 +117,17 @@ const handleUpdate = async () => {
       );
     }
 
-    const id = router.currentRoute.value.params.id as string;
-    const response = await flashcardStore.updateFlashcards(id, {
+    const id = route.params.id as string;
+    await flashcardStore.updateFlashcards(parseInt(id), {
       title: title.value,
       pinned: flashcard.value?.pinned ?? false,
       description: description.value,
       flashcards: flashcards.value,
-      isPublic: isPublic.value, // Include isPublic
+      isPublic: isPublic.value ?? false,
     });
     toast.success("Updated flashcard successfully");
 
-    router.push("/library");
+    navigateTo("/library");
   } catch (error) {
     toast.error("Check fields and try again");
   }
@@ -141,13 +136,14 @@ const handleUpdate = async () => {
 const formatDate = (date: Date) => new Date(date).toLocaleDateString();
 
 onMounted(async () => {
-  const id = router.currentRoute.value.params.id as string;
-  flashcard.value = await flashcardStore.getFlashcard(id);
+  const id = route.params.id as string;
+  const response = await flashcardStore.getFlashcard(id);
+  flashcard.value = response;
   if (flashcard.value) {
     title.value = flashcard.value.title;
     description.value = flashcard.value.description;
-    flashcards.value = flashcard.value.flashcards;
-    isPublic.value = flashcard.value.isPublic; // Set isPublic
+    flashcards.value = flashcard.value.flashcards || [];
+    isPublic.value = flashcard.value.isPublic;
   }
 });
 
