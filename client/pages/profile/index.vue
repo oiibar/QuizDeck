@@ -89,9 +89,10 @@ import passwordIcon from "@/assets/auth/password.svg";
 import unlockedIcon from "@/assets/auth/unlocked.svg";
 import closedIcon from "@/assets/auth/closed.svg";
 import openIcon from "@/assets/auth/open.svg";
-import { useToast } from "vue-toastification";
+import * as Toast from "vue-toastification";
 import { useUserStore } from "~/stores/user";
 
+const { useToast } = Toast;
 const toast = useToast();
 const userStore = useUserStore();
 const username = ref(userStore.user?.username || "");

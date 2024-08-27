@@ -73,11 +73,13 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "vue-toastification";
+import * as Toast from "vue-toastification";
+
 import { useFlashcardStore } from "~/stores/flashcards";
 import type { Flashcard, flashcardGroups } from "~/types/types";
 
 const route = useRoute();
+const { useToast } = Toast;
 const toast = useToast();
 const isPublic = ref(false);
 const flashcardStore = useFlashcardStore();

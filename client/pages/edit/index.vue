@@ -75,9 +75,11 @@
 
 <script setup lang="ts">
 import { useFlashcardStore } from "~/stores/flashcards";
-import { useToast } from "vue-toastification";
+import * as Toast from "vue-toastification";
+
 import type { Flashcard } from "~/types/types";
 
+const { useToast } = Toast;
 const toast = useToast();
 const flashcardStore = useFlashcardStore();
 const title = ref("");

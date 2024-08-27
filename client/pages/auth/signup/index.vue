@@ -128,7 +128,8 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "vue-toastification";
+import * as Toast from "vue-toastification";
+
 import unlocked from "~/assets/auth/unlocked.svg";
 import passwordIcon from "~/assets/auth/password.svg";
 import open from "~/assets/auth/open.svg";
@@ -141,6 +142,7 @@ const email = ref("");
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const { useToast } = Toast;
 const toast = useToast();
 
 const togglePasswordVisibility = () => {
