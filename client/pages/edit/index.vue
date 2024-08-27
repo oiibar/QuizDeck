@@ -75,12 +75,10 @@
 
 <script setup lang="ts">
 import { useFlashcardStore } from "~/stores/flashcards";
-import * as Toast from "vue-toastification";
 
 import type { Flashcard } from "~/types/types";
 
-const { useToast } = Toast;
-const toast = useToast();
+const { $toast } = useNuxtApp();
 const flashcardStore = useFlashcardStore();
 const title = ref("");
 const isPublic = ref(false);
@@ -125,11 +123,11 @@ const handleCreate = async () => {
       flashcards: flashcards.value,
       isPublic: isPublic.value,
     });
-    toast.success("Created flashcard successfully");
+    $toast.success("Created flashcard successfully");
 
     navigateTo("/library");
   } catch (error) {
-    toast.error("Fill all necessary fields");
+    $toast.error("Fill all necessary fields");
   }
 };
 

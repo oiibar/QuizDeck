@@ -82,15 +82,12 @@
 </template>
 
 <script setup lang="ts">
-import * as Toast from "vue-toastification";
-
 import unlocked from "~/assets/auth/unlocked.svg";
 import passwordIcon from "~/assets/auth/password.svg";
 import open from "~/assets/auth/open.svg";
 import closed from "~/assets/auth/closed.svg";
 
-const { useToast } = Toast;
-const toast = useToast();
+const { $toast } = useNuxtApp();
 const userStore = useUserStore();
 const showPassword = ref(false);
 const email = ref("");
@@ -108,11 +105,11 @@ const login = async () => {
     });
 
     if (userStore.user) {
-      toast.success("Logged in successfully");
+      $toast.success("Logged in successfully");
       await navigateTo("/library");
     }
   } catch (error) {
-    toast.error("Email or password is incorrect");
+    $toast.error("Email or password is incorrect");
   }
 };
 </script>

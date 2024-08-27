@@ -89,11 +89,10 @@ import passwordIcon from "@/assets/auth/password.svg";
 import unlockedIcon from "@/assets/auth/unlocked.svg";
 import closedIcon from "@/assets/auth/closed.svg";
 import openIcon from "@/assets/auth/open.svg";
-import * as Toast from "vue-toastification";
 import { useUserStore } from "~/stores/user";
 
-const { useToast } = Toast;
-const toast = useToast();
+const { $toast } = useNuxtApp();
+
 const userStore = useUserStore();
 const username = ref(userStore.user?.username || "");
 const password = ref("");
@@ -125,10 +124,10 @@ const updateProfile = async () => {
     username.value = "";
     password.value = "";
     confirmPassword.value = "";
-    toast.success("Profile updated successfully");
+    $toast.success("Profile updated successfully");
     navigateTo("/");
   } catch (error) {
-    toast.error("All fields are required");
+    $toast.error("All fields are required");
   }
 };
 </script>

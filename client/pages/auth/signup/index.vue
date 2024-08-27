@@ -128,8 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import * as Toast from "vue-toastification";
-
+const { $toast } = useNuxtApp();
 import unlocked from "~/assets/auth/unlocked.svg";
 import passwordIcon from "~/assets/auth/password.svg";
 import open from "~/assets/auth/open.svg";
@@ -142,8 +141,6 @@ const email = ref("");
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-const { useToast } = Toast;
-const toast = useToast();
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
@@ -174,12 +171,12 @@ const signup = async () => {
         email: email.value,
         password: password.value,
       });
-      toast.success("Signed up in successfully");
+      $toast.success("Signed up in successfully");
 
       await navigateTo("/library");
     }
   } catch (error) {
-    toast.error("Check fields and try again");
+    $toast.error("Check fields and try again");
   }
 };
 </script>

@@ -73,14 +73,11 @@
 </template>
 
 <script setup lang="ts">
-import * as Toast from "vue-toastification";
-
+const { $toast } = useNuxtApp();
 import { useFlashcardStore } from "~/stores/flashcards";
 import type { Flashcard, flashcardGroups } from "~/types/types";
 
 const route = useRoute();
-const { useToast } = Toast;
-const toast = useToast();
 const isPublic = ref(false);
 const flashcardStore = useFlashcardStore();
 
@@ -127,11 +124,11 @@ const handleUpdate = async () => {
       flashcards: flashcards.value,
       isPublic: isPublic.value ?? false,
     });
-    toast.success("Updated flashcard successfully");
+    $toast.success("Updated flashcard successfully");
 
     navigateTo("/library");
   } catch (error) {
-    toast.error("Check fields and try again");
+    $toast.error("Check fields and try again");
   }
 };
 
