@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type { Login, Signup, User, UserProfile } from "~/types/types";
 
-const BASE_URL = "http://localhost:10000/api";
+const BASE_URL = "https://quizdeck.onrender.com/api";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref<UserProfile>(null);
