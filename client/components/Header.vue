@@ -31,6 +31,18 @@
         </NuxtLink>
 
         <NuxtLink
+          to="/public"
+          :class="{
+            'bg-grayBg': isActive('/public'),
+            'hover:bg-grayBg': !isActive('/public'),
+          }"
+          class="rounded-lg p-1 tooltip"
+        >
+          <span class="tooltiptext">Public</span>
+          <img src="~/assets/public.svg" alt="Public" class="w-6" />
+        </NuxtLink>
+
+        <NuxtLink
           to="/edit"
           :class="{
             'bg-grayBg': isActive('/edit'),

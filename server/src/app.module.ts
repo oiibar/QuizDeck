@@ -12,6 +12,12 @@ import * as fs from 'fs';
     FlashcardsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
+      // host: 'localhost',
+      // port: 5432,
+      // username: 'postgres',
+      // password: '123',
+      // database: 'quizdeck',
+      // entities: [__dirname + '/**/*.entity{.js, .ts}'],
       host: 'quizdeck-quizdeck.l.aivencloud.com',
       port: 20021,
       username: 'avnadmin',
