@@ -20,6 +20,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["updateUserAnswers"]);
+
 const userAnswers = ref<{ question: string; answer: string }[]>([]);
 
 const storeAnswer = ({
@@ -37,5 +39,7 @@ const storeAnswer = ({
   } else {
     userAnswers.value.push({ question, answer });
   }
+
+  emit("updateUserAnswers", userAnswers.value);
 };
 </script>

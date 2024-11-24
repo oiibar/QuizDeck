@@ -12,10 +12,10 @@
           @click="confirm"
           class="bg-blue-500 text-white px-4 py-2 rounded"
         >
-          Yes
+          Submit
         </button>
         <button @click="cancel" class="bg-red-500 text-white px-4 py-2 rounded">
-          No
+          Cancel
         </button>
       </div>
     </div>
@@ -50,6 +50,4 @@ const handleBackdropClick = () => {
 };
 </script>
 
-<style scoped>
-/* Add any specific styling here if needed */
-</style>
+<style scoped></style>
