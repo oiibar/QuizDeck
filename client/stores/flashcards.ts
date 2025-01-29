@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import type { flashcardGroups } from "@/types/types";
 
-// const BASE_URL = "https://quizdeck.onrender.com/api";
-const BASE_URL = "https://quizdeck-production.up.railway.app/api";
+const BASE_URL = "https://quizdeck.onrender.com/api";
+// const BASE_URL = "https://quizdeck-production.up.railway.app/api";
 // const BASE_URL = "http://localhost:10000/api";
 
 export const useFlashcardStore = defineStore("flashcards", () => {
